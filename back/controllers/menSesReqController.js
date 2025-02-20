@@ -13,7 +13,7 @@ exports.createMentorSession = async (req, res) => {
       title,
       description,
       availableTimes,
-      maxParticipants,
+      // maxParticipants,
     });
 
     await newSession.save();

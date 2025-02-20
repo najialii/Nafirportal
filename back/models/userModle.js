@@ -23,7 +23,8 @@ const userSchema = new Schema({
         required: true
     },
     name: {
-        type: String
+        type: String,
+        required: true
     },
     profilePicture: {
         type: String,
@@ -75,19 +76,19 @@ const userSchema = new Schema({
     }
 });
 
-
+// Pre-save hook to enforce req roles 
 userSchema.pre('validate', function (next) {
     if (this.role == 'mentor') {
-        if (!this.name) this.invalidate('name', 'Path `name` is required.');
+        
         if (!this.profilePicture) this.invalidate('profilePicture', 'Path `profilePicture` is required.');
     }
-    if (this.role === 'mentee' && !this.name) {
-        this.invalidate('name', 'Path `name` is required.');
-    }
+    // if (this.role === 'mentee' && !this.country) {
+    //     this.invalidate('country', 'Path `country` is required.');
+    // }
     if (this.role === 'mentor' && (!this.skills || this.skills.length === 0)) {
         this.invalidate('skills', 'Path `skills` is required.');
-        next();
     }
+    next();
 });
 
 

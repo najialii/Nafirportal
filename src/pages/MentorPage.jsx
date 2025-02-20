@@ -9,14 +9,14 @@ const MentorPage = () => {
   const [mentor, setMentor] = useState(null);
   const [preferredTime, setpreferredTime] = useState(""); // To
   const [loading, setLoading] = useState(false);
-  console.log(user)
+  // console.log(user)
 
   
   useEffect(() => {
     axios.get(`http://localhost:4000/api/mentorsessions/${id}`)
       .then((response) => {
         setMentor(response.data);
-        console.log(response.data)
+        console.log('here is the data',  response.data)
       })
       .catch((error) => {
         console.error("Error fetching mentor details:", error.message);
@@ -31,36 +31,50 @@ const MentorPage = () => {
       
   }, [id]);
 
-
   const requestSession = async () => {
     if (!preferredTime) {
       alert("Please select a preferred time.");
       return;
     }
+    
     setLoading(true);
+    
     try {
-      const response = await axios.post("http://localhost:4000/api/requestsession", {
-        sessionId: id,
-        userId: user.userid, 
-        preferredTime,
-        status: "pending"
-      } );
+      const token = localStorage.getItem("userToken"); 
+      if (!token) {
+        throw new Error("User token not found. Please log in again.");
+      }
 
+      const response = await axios.post(
+        "http://localhost:4000/api/requestsession",
+        {
+          sessionId: id,
+          preferredTime,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Pass the token
+          },
+        }
+      );
+  
       alert("Session request sent successfully!");
       console.log(response.data);
     } catch (error) {
       console.error("Error requesting session:", error);
-      alert("Failed to request session.",error.message);
+      alert("Failed to request session. " + (error.response?.data?.message || error.message));
     }
+  
     setLoading(false);
   };
+  
 
   return (
     <div className="p-8">
-      <header className="h-80 bg-gradient-to-br from-green-800 to-green-400"></header>
+      {/* <header className="h-80 bg-gradient-to-br from-green-800 to-green-400"></header> */}
 
       {mentor ? (
-        <div className="flex justify-between gap-8 items-center -mt-32 px-8">
+        <div className="flex justify-between gap-8 items-center  px-8">
           <div className="flex justify-start items-center gap-2">
             <div className="h-40 w-40 overflow-hidden rounded-full flex justify-center items-center border-4 border-white shadow-lg">
               <img
@@ -77,7 +91,6 @@ const MentorPage = () => {
             <p className="text-gray-600 mb-3"><strong>About:</strong> {mentor.aboutMentor}</p>
             <p className="text-gray-600 mb-3"><strong>Available Times:</strong></p>
 
-            {/* Preferred Time Selection */}
             <select
               value={preferredTime}
               onChange={(e) => setpreferredTime(e.target.value)}
@@ -99,6 +112,7 @@ const MentorPage = () => {
               </button>
             </div>
           </div>
+          <div>mentor.</div>
         </div>
       ) : (
         <p className="text-center text-gray-500">Loading mentor details...</p>

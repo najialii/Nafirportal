@@ -16,7 +16,7 @@ router.post('/signup', signUp)
 
 router.patch('/approve-mentor/:id', authMiddleware, roleMiddleware('admin'), approveMentor);
 
-router.get('/accounts', authMiddleware, roleMiddleware('admin'), getAccountsByApprovalStatus);
+router.get('/accountsbystatus', authMiddleware, roleMiddleware('admin'), getAccountsByApprovalStatus);
 
 router.get('/me', authMiddleware, getCurrentUser);
 

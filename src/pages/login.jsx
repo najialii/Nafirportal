@@ -8,17 +8,16 @@ const Login =  ()=>{
       const [showPass, setShowPass] = useState(false)
       const [showModal, setShowModal] = useState(false);
 
-      const handleLogin = async (e) => {
-        e.preventDefault();
-      
-        const result = await signIn(email, password);
-      
-        // Check if the result contains an error instead of relying on `error` state
-        if (result?.error === "Your mentor account is awaiting approval") {
-          setShowModal(true);
-        }
-      };
-      
+    const handleLogin = async (e) => {
+  e.preventDefault();
+
+  const result = await signIn(email, password);
+console.log(result)
+  if (result.error === "Your mentor account is awaiting approval") {
+    setShowModal(true);
+  }
+};
+
 
     return (
       <>
@@ -92,7 +91,6 @@ const Login =  ()=>{
           </div>
         </div>
       </div>
-
       {showModal && (
           <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm text-center">

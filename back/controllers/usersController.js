@@ -16,6 +16,7 @@ const signUp = async (req, res) => {
         if (!email || !password) {
             throw new Error('Email and password are required');
         }
+        
         if (!validator.isEmail(email)) {
             throw new Error('Please enter a valid email address');
         }
@@ -32,11 +33,11 @@ const signUp = async (req, res) => {
             throw new Error('Email already exists');
         }
 
-        // Hash the password
+        // Hash the pass
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Prepare user data based on role
+        // Prepare user based on role
         let userData = { email, password: hashedPassword, role };
 
         // if (role === 'mentee') {
@@ -62,7 +63,7 @@ const signUp = async (req, res) => {
     }
 };
 
-// Login user
+// Login 
 const login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -99,7 +100,7 @@ const login = async (req, res) => {
 };
 
 
-//mentor approve 
+// approvemenotr 
 
 const approveMentor = async (req, res) => {
     try {

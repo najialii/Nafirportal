@@ -15,37 +15,41 @@ const Signup = () => {
     const [availability, setAvailability] = useState(true);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [about , setAbout] = useState()
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError('');
-
-        
-        const userData = {
-            email,
-            password,
-            role,
-            name,
-            profilePicture,
-            country,
-            skills,
-            linkedinProfile,
-            experienceYears,
-            industry,
-            availability,
-        };
-
-        try {
-            const response = await axios.post('http://localhost:4000/api/user/signup', userData);
-            console.log(response.data); 
-        } catch (err) {
+      e.preventDefault();
+      setLoading(true);
+      setError('');
+  
+      // console.log("User Data before sending:", { email, password, role, name });
+  
+      const userData = {
+          email,
+          password,
+          role,
+          name,
+          profilePicture,
+          country,
+          skills,
+          linkedinProfile,
+          experienceYears,
+          industry,
+          availability,
+          about
+      };
+  console.log('here the data sent to the server', userData)
+      try {
+          const response = await axios.post('http://localhost:4000/api/user/signup', userData);
+          console.log(response.data); 
+      } catch (err) {
           setError('Error creating user: ' + (err.response?.data?.message || err.message));
           console.error('Signup Error:', err.response?.data || err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+      } finally {
+          setLoading(false);
+      }
+  };
+  
 
     return (
 
@@ -84,9 +88,7 @@ const Signup = () => {
                     <option value="admin">Admin</option>
                 </select>
 
-                {role === 'mentor' && (
-                    <>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Name:</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Name:</label>
                         <input
                             type="text"
                             value={name}
@@ -94,6 +96,10 @@ const Signup = () => {
                             required
                             className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
                         />
+
+                {role === 'mentor' && (
+                    <>
+                       
 
                         <label className="block text-sm font-medium text-gray-700 mb-2">Profile Picture URL:</label>
                         <input
@@ -109,12 +115,13 @@ const Signup = () => {
                             value={skills}
                             onChange={(e) => setSkills(e.target.value.split(','))}
                             className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
+                            
                             placeholder="Enter skills, separated by commas"
                         />
                     </>
                 )}
 
-                {role === 'mentor' && (
+                {role === 'mentor' || role === 'admin' && (
                     <>
                         <label className="block text-sm font-medium text-gray-700 mb-2">LinkedIn Profile URL:</label>
                         <input

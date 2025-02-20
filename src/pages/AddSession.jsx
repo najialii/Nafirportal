@@ -19,7 +19,7 @@ const AddSession = ({ mentorId }) => {
                     Authorization: `Bearer ${token}`
                 }
             });
-console.log(response.data)
+console.log('here is the response ',response.data)
             setMentor(response.data);
             setMentorSkills(response.data.skills || []);
         } catch (error) {
@@ -51,7 +51,7 @@ console.log(response.data)
                 mentorId: mentor?._id,
                 mentorName: mentor?.name,
                 mentorImage: mentor?.profilePicture,
-                aboutMentor: mentor?.about,
+                aboutMentor: "very good mentor ",
                 skills: updatedSkills,
                 availableTimes: availableTimes.split(",").map(time => time.trim()),
             });
@@ -109,6 +109,15 @@ console.log(response.data)
 
                         <label className="font-semibold">Available Times (comma separated):</label>
                         <input 
+                            type="text" 
+                            value={availableTimes} 
+                            onChange={(e) => setAvailableTimes(e.target.value)} 
+                            placeholder="e.g., 10:00 AM, 2:00 PM"
+                            className="border p-2 rounded"
+                        />
+
+                        <label className="font-semibold">introduction</label>
+                        <textarea 
                             type="text" 
                             value={availableTimes} 
                             onChange={(e) => setAvailableTimes(e.target.value)} 
