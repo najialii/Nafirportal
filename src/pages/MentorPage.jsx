@@ -7,7 +7,7 @@ const MentorPage = () => {
   const { id } = useParams(); 
   const { user } = useAuthContext()
   const [mentor, setMentor] = useState(null);
-  const [preferredTime, setpreferredTime] = useState(""); // To
+  const [preferredTime, setpreferredTime] = useState(""); 
   const [loading, setLoading] = useState(false);
   // console.log(user)
 
@@ -53,7 +53,7 @@ const MentorPage = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Pass the token
+            Authorization: `Bearer ${token}`,
           },
         }
       );

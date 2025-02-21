@@ -5,12 +5,14 @@ const mongoose = require('mongoose');
 //creates express 
 const mentorsessions = require('./routes/mentorSessions')       
 const menreq = require('./routes/menSesReq')       
-const userRoutes = require('./routes/userRoutes')       
+const userRoutes = require('./routes/userRoutes')      
+const cvRoutes = require("./routes/cvrouts"); 
 const app = express()
 const cors = require('cors')
 
 app.use(cors());
 
+app.use("/api/cvs", cvRoutes);
 
 //middlewear
 app.use(express.json())

@@ -6,7 +6,7 @@ const Nav = () => {
   return (
     <nav className="bg-white border-gray-200">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link to="/homepage" className="flex items-center space-x-3 rtl:space-x-reverse">
+        <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <h3 className="text-2xl text-green-400 font-bold">Nafir</h3>
         </Link>
         <button

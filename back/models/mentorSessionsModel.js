@@ -14,7 +14,8 @@ const skills  = [
 ]
 const mentorSessionsSchema = new Schema({
     mentorImage: {
-        type: String
+        type: String, 
+        required: true
     },
     mentorName: {
         type: String,

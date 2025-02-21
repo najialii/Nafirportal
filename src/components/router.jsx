@@ -8,6 +8,7 @@ import Signup from "../pages/signup";
 import Login from "../pages/login";
 import AddSession from '../pages/AddSession'
 import SessionPage from "../pages/Sessionlayout";
+import CVUpload from "../pages/cvchecks";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -18,6 +19,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/addsession" element={<AddSession />} />
       <Route path="/sessionPage" element={<SessionPage />} />
+      <Route path="/cv" element={<CVUpload />} />
     </Routes>
   );
 };
