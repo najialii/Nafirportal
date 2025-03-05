@@ -210,7 +210,9 @@ const AddSession = ({ mentorId }) => {
             </Form.Item>
           </Form>
         ) : (
+          <div className="flex justify-center items-center w-full h-full">
           <Spin tip="Loading mentor details..." />
+          </div>
         )}
       </div>
      

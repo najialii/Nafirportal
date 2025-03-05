@@ -4,6 +4,10 @@ import useAuthContext from "../hooks/useAuthContext";
 import { CiChat1 } from "react-icons/ci";
 import { CiBellOn } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
+import {Splitter} from "antd"
+import { UserOutlined } from '@ant-design/icons';
+
+import {Avatar} from 'antd'
 
 import nafirLogo from '../assets/logo-01.jpg'
 const Nav = () => {
@@ -98,9 +102,15 @@ const Nav = () => {
         <button className=" bg-white shadow-md  h-8 w-8 flex justify-center items-center rounded-full ">
                 <Link to="/signup"><CiBellOn  size={20} color="#221F42" /></Link>
               </button>
-        <button className=" bg-white shadow-md  h-8 w-8 flex justify-center items-center rounded-full ">
-                <Link to="/signup">< CgProfile size={20} color="#221F42" /></Link>
+
+              <div>
+              
+
+
+        <button className="  shadow-md  h-8 w-8 flex justify-center items-center rounded-full ">
+                <Link to="/signup"><Avatar size={28} color={"#221F42"} icon={<UserOutlined />} /></Link>
               </button>
+              </div>
             </>
           ) : (
             <>

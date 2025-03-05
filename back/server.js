@@ -30,7 +30,7 @@
     const cvRoutes = require("./routes/cvrouts");
     const chatRoutes = require('./routes/chatRoute');
     // const Chat = require('./models/chat'); // Import the Chat model
-
+const connectionRoutes = require('./routes/connectRouter')
 
 
 
@@ -59,6 +59,7 @@
   //  app.use("/api/chat", chatRoutes);
     app.use("/api/conversation", convroutes);
     app.use("/api/messages", Message);
+    app.use("/api/connect", connectionRoutes);
 
 
 
