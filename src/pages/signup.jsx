@@ -22,7 +22,7 @@ const Signup = () => {
       setLoading(true);
       setError('');
   
-      // console.log("User Data before sending:", { email, password, role, name });
+      // console.l  og("User Data before sending:", { email, password, role, name });
   
       const userData = {
           email,
@@ -41,10 +41,10 @@ const Signup = () => {
   console.log('here the data sent to the server', userData)
       try {
           const response = await axios.post('http://localhost:4000/api/user/signup', userData);
-          console.log(response.data); 
+          console.log(response); 
       } catch (err) {
           setError('Error creating user: ' + (err.response?.data?.message || err.message));
-          console.error('Signup Error:', err.response?.data || err.message);
+          console.error('Signup Error:', err.response || err.message);
       } finally {
           setLoading(false);
       }

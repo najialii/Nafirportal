@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary-light: #221F42;
+  --color-primary-dark: #3f3979;
+
+  --color-secondary-light: #EDB44B;
+  --color-secondary-dark: #efbb5d;
+
+  --color-accent-light: #91C85C;
+  --color-accent-dark: #5F8C2D;
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+
 body {
     font-family: "El Messiri", sans-serif;
   }

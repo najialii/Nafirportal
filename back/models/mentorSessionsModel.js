@@ -13,9 +13,14 @@ const skills  = [
     "Graphic Design"
 ]
 const mentorSessionsSchema = new Schema({
+    mentorId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },    
     mentorImage: {
         type: String, 
-        required: true
+        // required: true
     },
     mentorName: {
         type: String,
@@ -26,7 +31,7 @@ const mentorSessionsSchema = new Schema({
         required: true,
         validate: {
             validator: function (skills) {
-                return skills.every(skill => allSkills.includes(skill) || typeof skill === "string");
+                return skills.every(skill => skills.includes(skill) || typeof skill === "string");
             },
             message: "Some skills are not allowed."
         }
@@ -35,12 +40,12 @@ const mentorSessionsSchema = new Schema({
         type: String, 
         required: true
     },
-    availableTimes: {
-        type: [String], 
-        required: true
-    },
+    availableTimes: [{
+        day: { type: String, required: true },
+        times: [{ type: String, required: true }] 
+    }],
     requests: [{
-        menteeName: String,
+        menteeId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         requestedTime: String, 
         status: {
             type: String,
@@ -56,4 +61,4 @@ const mentorSessionsSchema = new Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('mentorSessions', mentorSessionsSchema);
+module.exports = mongoose.model('MentorSession', mentorSessionsSchema);

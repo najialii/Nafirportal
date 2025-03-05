@@ -3,20 +3,40 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import cardtempimag from '../assets/studio-portrait-beautiful-young-woman-posing.jpg';
 import useAuthContext from '../hooks/useAuthContext';
+import { useNavigate } from 'react-router-dom';
 const MentorPage = () => {
   const { id } = useParams(); 
   const { user } = useAuthContext()
   const [mentor, setMentor] = useState(null);
   const [preferredTime, setpreferredTime] = useState(""); 
   const [loading, setLoading] = useState(false);
+  const [room , setRoom] = useState(null)
+  const navigate = useNavigate()
   // console.log(user)
+
+console.log('this the user', user)
+console.log('this the mentor id', id)
+  const startChat = () => {
+    if (!mentor?.mentorId) {
+      console.error("mentorId is missing");
+      return;
+    }
+
+    console.log(`Navigating to chat with mentorId: ${mentor.mentorId}`);
+    navigate(`/messanger/${mentor.mentorId}`);
+  };
 
   
   useEffect(() => {
-    axios.get(`http://localhost:4000/api/mentorsessions/${id}`)
+    axios.get(`http://localhost:4000/api/mentorsessions/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+      }
+    })
+    
       .then((response) => {
         setMentor(response.data);
-        console.log('here is the data',  response.data)
+        console.log('here is the data',  response)
       })
       .catch((error) => {
         console.error("Error fetching mentor details:", error.message);
@@ -31,41 +51,98 @@ const MentorPage = () => {
       
   }, [id]);
 
-  const requestSession = async () => {
-    if (!preferredTime) {
-      alert("Please select a preferred time.");
+  // console.log("Available times:", mentor.availableTimes);
+
+  
+  const userId = user.userid
+
+const createConv = ()=>{
+  try {
+
+    axios.post('http://localhost:4000/api/conversation', 
+    {
+      senderId: userId,
+      receiverId: mentor.mentorId
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+      }
+    }
+    )
+  } catch (err) {
+
+    console.error(err.message)
+  }
+  
+  
+}
+
+const requestSession = async () => {
+  if (!preferredTime) {
+    alert("Please select a preferred time.");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const token = localStorage.getItem("userToken"); 
+    if (!token) {
+      throw new Error("User token not found. Please log in again.");
+    }
+
+    // Log the preferredTime to debug
+    console.log('Selected preferredTime:', preferredTime);
+
+    // Validate the preferredTime format
+    const timeFormat = /^\w+ \d{2}:\d{2}$/; // Example format: "Friday 06:00"
+    if (!timeFormat.test(preferredTime)) {
+      throw new Error("Invalid time slot format.");
+    }
+
+    const reqbdy = {
+      sessionId: id,
+      preferredTime // Ensure it's a string
+    };
+
+    console.log('Request body:', reqbdy);
+
+    const response = await axios.post(
+      "http://localhost:4000/api/requestsession",
+      reqbdy,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    alert("Session request sent successfully!");
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error requesting session:", error);
+    alert("Failed to request session. " + (error.response?.data?.message || error.message));
+  }
+
+  setLoading(false);
+};
+
+  const createRoom = async () => {
+    const token = localStorage.getItem("userToken");
+    if (!token) {
+      alert("Please log in to message the mentor.");
       return;
     }
-    
-    setLoading(true);
-    
-    try {
-      const token = localStorage.getItem("userToken"); 
-      if (!token) {
-        throw new Error("User token not found. Please log in again.");
-      }
 
-      const response = await axios.post(
-        "http://localhost:4000/api/requestsession",
-        {
-          sessionId: id,
-          preferredTime,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-  
-      alert("Session request sent successfully!");
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error requesting session:", error);
-      alert("Failed to request session. " + (error.response?.data?.message || error.message));
-    }
-  
-    setLoading(false);
+    socket.emit('create-room', { user1: user.id, user2: mentor._id, token }, (room) => {
+      if (room) {
+        setRoom(room);
+        alert(`Room ${room} created! You can now start messaging.`);
+      } else {
+        alert("Failed to create a room.");
+      }
+    });
   };
   
 
@@ -90,19 +167,27 @@ const MentorPage = () => {
             <p className="text-gray-600 text-lg mb-3"><strong>Expertise:</strong> {mentor.mentorExpertise}</p>
             <p className="text-gray-600 mb-3"><strong>About:</strong> {mentor.aboutMentor}</p>
             <p className="text-gray-600 mb-3"><strong>Available Times:</strong></p>
-
             <select
               value={preferredTime}
               onChange={(e) => setpreferredTime(e.target.value)}
               className="w-full border border-gray-300 rounded-md p-2 mb-3"
             >
-              <option value="">Select a time</option>
-              {mentor.availableTimes?.map((time, index) => (
-                <option key={index} value={time}>{time}</option>
-              ))}
+             <option>Select a time</option>
+{mentor.availableTimes.map((slot, index) => (
+  slot.times.map((time, timeIndex) => {
+    const formattedTime = `${slot.day} ${time}`;
+    console.log("Available Time Option:", formattedTime); // Debugging log
+    return (
+      <option key={`${index}-${timeIndex}`} value={formattedTime}>
+        {formattedTime}
+      </option>
+    );
+  })
+))}
+
             </select>
 
-            <div className="flex justify-end w-full items-center">
+            <div className="flex flex-col justify-end w-full items-center">
               <button
                 onClick={requestSession}
                 className="text-white w-full bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
@@ -110,6 +195,12 @@ const MentorPage = () => {
               >
                 {loading ? "Requesting..." : "Book a Session"}
               </button>
+              <button
+                              className="text-white w-full bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+              onClick={createConv}
+              >
+Message
+                </button>
             </div>
           </div>
           <div>mentor.</div>

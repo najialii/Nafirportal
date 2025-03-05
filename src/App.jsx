@@ -6,6 +6,7 @@ import axios from 'axios'
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 console.log('API Base URL:', apiBaseUrl);
 import Nav from '../src/components/navbar'
+import { Button, ConfigProvider, Space } from 'antd';
 
 import Footer from './components/footer';
 import AppRoutes from './components/router';
@@ -43,6 +44,20 @@ function App() {
 
   return (
     <>
+      <ConfigProvider
+    theme={{
+      token: {
+        // Seed Token
+        colorPrimary: '#221F42',
+        borderRadius: 2,
+
+        // Alias Token
+        colorBgContainer: '#f6ffed',
+      },
+    }}
+  >
+
+<div className='font-expoAr '>
 
     <Nav />
 
@@ -58,7 +73,10 @@ function App() {
 
 
 
-      <Footer />
+      <Footer /> 
+      </div>
+
+      </ConfigProvider>
     </>
   )
 
