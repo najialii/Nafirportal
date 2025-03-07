@@ -38,13 +38,10 @@ const FollowButton = ({ userId, currentUserId }) => {
         <button 
             onClick={handleFollow} 
             disabled={loading} 
+            className="bg-white text-primary-light hover:bg-primary-light hover:text-white border border-primary-light rounded-md cursor-pointer"
             style={{
                 padding: "10px 15px",
-                backgroundColor: isFollowing ? "red" : "blue",
-                color: "white",
-                border: "none",
-                cursor: "pointer",
-                borderRadius: "5px"
+        
             }}>
             {loading ? "Loading..." : isFollowing ? "Unfollow" : "Follow"}
         </button>

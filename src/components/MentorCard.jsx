@@ -9,6 +9,8 @@ const MentorCard = () => {
   const [mentors, setMentors] = useState([]);
   const { user } = useAuthContext();
 
+
+
   const getMentorsData = async () => {
     try {
       if (!user?.token) {
@@ -26,6 +28,9 @@ const MentorCard = () => {
     }
   };
 
+  const hanProNavagte = ()=>{
+     navigate(`/user/${mentors.data.mentorId}`)
+   }
   useEffect(() => {
     if (user) getMentorsData();
   }, [user]);
@@ -35,10 +40,11 @@ const MentorCard = () => {
       {mentors.map((mentor) => (
         <div 
           key={mentor._id} 
-          onClick={() => navigate(`/mentor/${mentor._id}`)}
+           onClick={() => navigate(`/mentor/${mentor._id}`)}
           className="cursor-pointer w-[800px]  p-4  shadow-md rounded-lg overflow-hidden border grid grid-cols-3 border-gray-500 hover:shadow-lg transition duration-300"
         >
           <img 
+          // onClick={()=>navigate(`/profile/${mentor.mentorId}`)}
             src={mentorImg} 
             alt={mentor.mentorName} 
             className="w-40 h-40 object-cover"

@@ -41,13 +41,13 @@ const MentSessions = () => {
     //   render: (sessionId) => sessionId._id, 
     // },
     {
-      title: "User Name",
+      title: "Mentee Name",
       dataIndex: "userId",
       key: "userId",
       render: (userId) => userId.name, 
     },
     {
-      title: "Preferred Time",
+      title: " Time",
       dataIndex: "preferredTime",
       key: "preferredTime",
     },
@@ -57,7 +57,7 @@ const MentSessions = () => {
       key: "status",
     },
     {
-      title: "Created At",
+      title: "Request Date",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (createdAt) => new Date(createdAt).toLocaleString(), 
@@ -107,6 +107,22 @@ const MentSessions = () => {
 
   return (
     <div className="h-screen">
+        <div className="py-3 flex gap-2 items-center">
+            <h3>
+                Filter
+            </h3>
+        <Select
+      defaultValue="lucy"
+      style={{ width: 120 }}
+    //   onChange={handleChange}
+      options={[
+        { value: 'jack', label: 'Approved' },
+        { value: 'lucy', label: 'Rejected' },
+        { value: 'Yiminghe', label: 'pendeing' },
+    
+      ]}
+    />
+        </div>
       
       <Table
         dataSource={sessionsReq} 
@@ -119,11 +135,12 @@ const MentSessions = () => {
         title="Session Details"
         placement="right"
         width={500}
+        height={400}
         onClose={onClose}
         visible={visible}
       >
         {selectedSes && (
-          <div>
+          <div className="h-full flex-col flex gap-4">
             <p><strong>User Name:</strong> {selectedSes.userId.name}</p>
             <p><strong>Preferred Time:</strong> {selectedSes.preferredTime}</p>
             <p><strong>Status:</strong> {selectedSes.status}</p>

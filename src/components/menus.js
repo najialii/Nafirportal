@@ -6,9 +6,9 @@ export const adminMenu = [
   ];
   
   export const mentorMenu = [
-    { label: "Profile", path: "/manager/dashboard" },
+    { label: "Profile", path: "/profile/me" },
     { label: "add session", path: "/addsession" },
-    { label: "session Requests ", path: "/men-sessions" },
+    { label: "session Requests", path: "/men-sessions" },
   ];
   
   export const menteeMenu = [

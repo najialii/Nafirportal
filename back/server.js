@@ -65,10 +65,20 @@ const connectionRoutes = require('./routes/connectRouter')
 
     // chat functionality  
     let users = [] 
-    const addUser = (userId, socketId)=>{
-       !users.some(user => user.userId === userId) &&
-       users.push({userId, socketId})
-    }
+    console.log(users)
+    const addUser = (userId, socketId) => {
+  
+        if (!users.some(user => user.userId === userId)) {
+            users.push({ userId, socketId });
+        } else {
+            // If the user already exists, update their socket ID
+            users = users.map(user =>
+                user.userId === userId ? { userId, socketId } : user
+            );
+        }
+    };
+    
+    
    
     const RemoveUser = (socketId)=>{
         users = users.filter(user => user.socketId !== socketId)
@@ -83,17 +93,18 @@ const connectionRoutes = require('./routes/connectRouter')
     io.on('connection', (socket)=>{
         console.log(`user conected with soc id : ${socket.id}`);
 
-        //take from user id and socket id from user
-socket.on('add-user', (userId)=>{
+        //take  user id and socket id from user
+socket.on('add-user', (userId)=>{    
+    console.log(`User added: ${userId}, Socket ID: ${socket.id}`); 
 addUser(userId,socket.id)
 io.emit("get-users", users)
 })
 
         // join
-       socket.on("join-room", (data) => {
-         socket.join(data)
-         console.log(`user ${socket.id} joined room ${data}`)
-        })
+socket.on("join-room", (data) => {
+socket.join(data)
+console.log(`user ${socket.id} joined room ${data}`)
+})
 
 
         
@@ -102,7 +113,7 @@ socket.on('send-message' , ({senderId, receiverId, text})=>{
 const user = getUser(receiverId)
 
 if(!user){
-    console.log('user not found in the list' )
+    console.log('user not found in the listtttttttttttt' )
     return
     }
 io.to(user.socketId).emit('get-messages',{
@@ -113,7 +124,7 @@ io.to(user.socketId).emit('get-messages',{
     // console.log(data)
 //   socket.to(data.room).emit('receive-message', data)
 } )
-        socket.on('disconnect', (socket) =>{
+        socket.on('disconnect', () =>{
             RemoveUser(socket.id)
             console.log(`user disconnected with the id : ${socket.id}`)
             //i have no clue tbh 

@@ -6,6 +6,7 @@ import { CiBellOn } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
 import {Splitter} from "antd"
 import { UserOutlined } from '@ant-design/icons';
+// import   us  from 'react-router-dom'
 
 import {Avatar} from 'antd'
 
@@ -108,7 +109,7 @@ const Nav = () => {
 
 
         <button className="  shadow-md  h-8 w-8 flex justify-center items-center rounded-full ">
-                <Link to="/signup"><Avatar size={28} color={"#221F42"} icon={<UserOutlined />} /></Link>
+                <Link to="/profile/me"><Avatar size={28} color={"#221F42"} icon={<UserOutlined />} /></Link>
               </button>
               </div>
             </>
