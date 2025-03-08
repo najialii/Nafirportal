@@ -90,14 +90,15 @@ console.log
       try {
         const res = await axios.get(`http://localhost:4000/api/conversation/${currentUser}`);
         setConversations(res.data);
+        console.log(res.data);
       } catch (err) {
         console.error(err);
       }
     };
-
+   
     if (currentUser) {
       getConversations();
-    }
+    }         
   }, [currentUser]);
 
   useEffect(() => {
@@ -194,11 +195,19 @@ handleMsgNav()
                   title={item.name}
                   description={item.members.filter((m) => m !== currentUser)[0]}
                 /> */}
-             <List.Item.Meta
-                avatar={<Avatar size="large" src="https://placehold.co/200x/221F42/ffffff.svg" />}
-                title={item.name}
-                description={item.members.filter((m) => m._id !== currentUser._id)[0]?.name || "Unknown"}
-                />
+                    <List.Item.Meta
+        avatar={
+            <Avatar
+            src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${
+                item.members.find((m) => m._id !== currentUser)?.name || "Unknown"
+            }`}
+            />
+        }
+        title={item.name}
+        description={
+            item.members.find((m) => m._id !== currentUser)?.name || "Unknown"
+        }
+        />
 
               </List.Item>
             )}
