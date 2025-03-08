@@ -10,19 +10,20 @@ const MentorCard = () => {
   const { user } = useAuthContext();
 
 
-
+const page = 1
+const limit = 3
   const getMentorsData = async () => {
     try {
       if (!user?.token) {
         console.error('No token found');
         return;
-      }
-      const res = await axios.get('http://localhost:4000/api/mentorsessions', {
+      }    
+      const res = await axios.get(`http://localhost:4000/api/mentorsessions?page=${page}&limit=${limit}`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       console.log(res.data)
-      console.log(res.data._id)
-      setMentors(res.data);
+    //  console.log(res.data.docs)
+      setMentors(res.data.docs);
     } catch (err) {
       console.error(err.message);
     }
@@ -40,11 +41,11 @@ const MentorCard = () => {
       {mentors.map((mentor) => (
         <div 
           key={mentor._id} 
-           onClick={() => navigate(`/mentor/${mentor._id}`)}
+          onClick={() => navigate(`/mentor/${mentor._id}`)}
           className="cursor-pointer w-[800px]  p-4  shadow-md rounded-lg overflow-hidden border grid grid-cols-3 border-gray-500 hover:shadow-lg transition duration-300"
         >
           <img 
-          // onClick={()=>navigate(`/profile/${mentor.mentorId}`)}
+          //  onClick={()=>navigate(`/profile/${mentor.mentorId}`)}
             src={mentorImg} 
             alt={mentor.mentorName} 
             className="w-40 h-40 object-cover"

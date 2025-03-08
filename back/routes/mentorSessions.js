@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { authMiddleware } = require('../middleware/requireauth');
+const paginationMidWear = require('../middleware/paginationMidware')
+const MentorSession = require('../models/mentorSessionsModel');
 const {
     createMentorSession,
     getMentorSessions,
@@ -16,6 +18,7 @@ const {
 router.use(authMiddleware)
 router.get('/',authMiddleware, getMentorSessions);
 
+// router.get('/api/mentorsessions',authMiddleware, paginationMidWear(MentorSession), getMentorSessions);
 
 
 router.get('/:id', getSingleMentorSession);

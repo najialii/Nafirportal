@@ -1,10 +1,21 @@
 const { default: mongoose } = require('mongoose');
 const MentorSession = require('../models/mentorSessionsModel');
-
+const paginationMidWear = require('../middleware/paginationMidware')
 
 const getMentorSessions = async (req, res) => {
     try {
-        const sessions = await MentorSession.find({}).sort({ createdAt: -1 });
+    const {page = 1 , limit = 10} = req.query
+
+    const options = {
+        page: parseInt(page, 10),
+        limit: parseInt(limit, 10),
+        sort: { createdAt: -1 },
+    }
+
+    const sessions = await MentorSession.paginate({}, options)
+        // const sessions = await MentorSession.find({}).sort({ createdAt: -1 });
+        console.log(sessions);
+
         res.status(200).json(sessions);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -68,7 +79,6 @@ const updateMentorSession = async (req, res) => {
             return res.status(404).json({ error: 'Session not found' });
         }
 
-        // Log the requestedTime to debug
         console.log('Requested Time:', requestedTime);
 
         const request = session.requests.find(req => req.requestedTime === requestedTime && req.menteeName === menteeName);

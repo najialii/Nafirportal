@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-
+const mongosePaginate = require('mongoose-paginate-v2')
 const Schema = mongoose.Schema;
+
 
 
 const skills  = [
@@ -60,5 +61,5 @@ const mentorSessionsSchema = new Schema({
 }, {
     timestamps: true
 });
-
+mentorSessionsSchema.plugin(mongosePaginate)
 module.exports = mongoose.model('MentorSession', mentorSessionsSchema);

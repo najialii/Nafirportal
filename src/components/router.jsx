@@ -32,6 +32,7 @@ const AppRoutes = () => {
       <Route path="/messages" element={<RoomsList />} />
       <Route path="/chatroom" element={<ChatRoom />} />
       <Route path="/messanger" element={<Messanger/>} />
+      <Route path="/messanger/:conversationId" element={<Messanger/>} />
       <Route path="/profile" element={<Profile/>} />
       <Route path="/profile/:userId" element={<UserPro />} />
 

@@ -65,17 +65,17 @@ const connectionRoutes = require('./routes/connectRouter')
 
     // chat functionality  
     let users = [] 
-    console.log(users)
     const addUser = (userId, socketId) => {
-  
+        
         if (!users.some(user => user.userId === userId)) {
             users.push({ userId, socketId });
         } else {
-            // If the user already exists, update their socket ID
+            // If the user  existsupdate their socket ID
             users = users.map(user =>
                 user.userId === userId ? { userId, socketId } : user
             );
         }
+        console.log('here are the users array',users)
     };
     
     
@@ -111,6 +111,7 @@ console.log(`user ${socket.id} joined room ${data}`)
         // send and get  msg
 socket.on('send-message' , ({senderId, receiverId, text})=>{
 const user = getUser(receiverId)
+console.log('sent message data', senderId, receiverId, text)
 
 if(!user){
     console.log('user not found in the listtttttttttttt' )
@@ -121,6 +122,7 @@ io.to(user.socketId).emit('get-messages',{
     text
 })
 
+// console.log(text)
     // console.log(data)
 //   socket.to(data.room).emit('receive-message', data)
 } )

@@ -6,6 +6,7 @@ import moment from "moment";
 import { IoIosSend } from "react-icons/io";
 import { Layout, Input, Button, List, Avatar, Spin, notification } from "antd";
 import Conversations from "../components/conversations";
+import {useParams} from 'react-router-dom'
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -19,7 +20,11 @@ const Messanger = () => {
   const currentUser = user?.user?.userid;
   const socket = useRef(null);
   const newMessageRef = useRef(null);
+  const conId = useParams();
 
+//   console.log("Extracted Conversation ID:", conId.conversationId);
+
+console.log
   const formatTimeAgo = (createdAt) => {
     return moment(createdAt).fromNow();
   };
@@ -28,17 +33,41 @@ const Messanger = () => {
     if (!currentUser) return;
 
     if (!socket.current) {
-      socket.current = io("http://localhost:4000");
+      socket.current = io("http://localhost:4000",{
+
+          reconnection : true,
+          reconnectionAttempts: 10,
+       reconnectionDelay: 3000,
+       transports: ['websoket']
+      });
     }
 
+    //   if (!socket.current) {
+    // socket.current = io("http://localhost:4000", {
+    //   reconnection: true,
+    //   reconnectionAttempts: 10,
+    //   reconnectionDelay: 3000,
+    // });
+
+
+    // socket.current.on("connect", () => {
+    //     console.log("Socket connected:", socket.current.id);
+    //     socket.current.emit("add-user", currentUser); 
+    //   });
+    
+    //   socket.current.on("disconnect", () => {
+    //     console.log("Socket disconnected. Attempting to reconnect...");
+    //   });
+    
     socket.current.emit("add-user", currentUser);
 
     socket.current.on("get-messages", (data) => {
-      setArrivalMessage({
+        console.log("New message received:", data);
+        setArrivalMessage({
         sender: data.senderId,
         text: data.text,
         createdAt: Date.now(),
-      });
+    });
     });
 
     return () => {
@@ -54,6 +83,8 @@ const Messanger = () => {
     }
   }, [arrivalMessage, currentChat]);
 
+
+  
   useEffect(() => {
     const getConversations = async () => {
       try {
@@ -75,6 +106,7 @@ const Messanger = () => {
         try {
           const response = await axios.get(`http://localhost:4000/api/messages/${currentChat._id}`);
           setMessages(response.data);
+        //   console.log('lets see ', response.data)
         } catch (err) {
           console.error(err);
         }
@@ -91,9 +123,8 @@ const Messanger = () => {
     const message = {
       sender: currentUser,
       text: newMessage,
-      conversationId: currentChat._id,
+      conversationId: currentChat?._id,
     };
-
     const receiverId = currentChat.members.find((member) => member !== currentUser);
     socket.current.emit("send-message", {
       senderId: currentUser,
@@ -121,7 +152,25 @@ const Messanger = () => {
       placement: 'bottomRight',
     });
   };
-  
+
+  //thats a bad idea ik  
+  const handleMsgNav = ()=>{
+    if(!conId.conversationId === undefined || conId !== undefined ){
+
+       
+      if (conId && conversations.length > 0) {
+        const chat = conversations.find((conv) => conv._id === conId);
+        if (chat) {
+          setCurrentChat(chat);
+          console.log('hey its working but it wont do thre thing ')
+        }
+      }
+    }
+  }
+  useEffect(() => {
+handleMsgNav()
+  }, [conId, conversations]);
+
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -140,11 +189,17 @@ const Messanger = () => {
                   <span>{formatTimeAgo(item.updatedAt)}</span>,
                 ]}
               >
-                <List.Item.Meta
+                {/* <List.Item.Meta
                   avatar={<Avatar size="large" src="https://placehold.co/200x/221F42/ffffff.svg" />}
                   title={item.name}
                   description={item.members.filter((m) => m !== currentUser)[0]}
+                /> */}
+             <List.Item.Meta
+                avatar={<Avatar size="large" src="https://placehold.co/200x/221F42/ffffff.svg" />}
+                title={item.name}
+                description={item.members.filter((m) => m._id !== currentUser._id)[0]?.name || "Unknown"}
                 />
+
               </List.Item>
             )}
           />
@@ -184,8 +239,11 @@ const Messanger = () => {
                       boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                     }}
                   >
-                    <p>{msg.text}</p>
-                    <small>{formatTimeAgo(msg.createdAt)}</small>
+                <div key={msg._id || msg.createdAt}
+                   ref={index === messages.length - 1 ? newMessageRef : null}> 
+    <p>{msg.text}</p>
+    <small>{formatTimeAgo(msg.createdAt)}</small>
+  </div>
                   </div>
                 </div>
               ))
@@ -199,7 +257,7 @@ const Messanger = () => {
               <p>Select a conversation to start chatting</p>
             </div>
           )}
-             <div ref={newMessageRef} />
+
             </div>
         </Content>
 

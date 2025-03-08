@@ -51,30 +51,41 @@ console.log('this the mentor id', id)
       
   }, [id]);
 
-  // console.log("Available times:", mentor.availableTimes);
-
   
-  const userId = user.userid
 
-const createConv = ()=>{
+const userLS = JSON.parse(localStorage.getItem('user'));
+const userId = user ? userLS.userid : null;
+
+
+const hanProNavagte = ()=>{
+  navigate(`/messanger/`)
+}
+
+
+const createConv = async ()=>{
   try {
 
-    axios.post('http://localhost:4000/api/conversation', 
+    const res = await axios.post('http://localhost:4000/api/conversation', 
     {
       senderId: userId,
       receiverId: mentor.mentorId
     },
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("userid")}`,
       }
     }
-    )
+  )
+  console.log(res.status)
+  if(res.status === 200){
+    const conversationId = res.data._id
+    console.log(res.data._id)
+    navigate(`/messanger/${conversationId}`)
+  }
   } catch (err) {
 
     console.error(err.message)
   }
-  
   
 }
 

@@ -3,13 +3,19 @@ const Schema = mongoose.Schema;
 
 const MessageSchema = new Schema({
     conversationId: {
-        type: String
-    }, 
-   sender : {
-type : String 
+        type: Schema.Types.ObjectId,
+        ref: 'Conversation',  // Reference to the Conversation model
+        required: true
     },
-    text:
-    {type :String}
+    sender: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',  // Reference to the User model
+        required: true
+    },
+    text: {
+        type: String,
+        required: true
+    }
 }
 
 ,{timestamps : true}
