@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import axios from 'axios'
 // import { sum } from '../sum.js';  // Correct import
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
