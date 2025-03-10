@@ -4,7 +4,6 @@ const cvController = require("../controllers/cvController");
 
 const router = express.Router();
 
-// Configure Multer for file uploads
 const upload = multer({ dest: "uploads/" });
 
 

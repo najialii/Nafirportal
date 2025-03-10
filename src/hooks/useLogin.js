@@ -9,34 +9,21 @@ export const useSignIn = () => {
   
   const signIn = async (email, password) => {
     setIsPending(true);
-    setError(null); 
+    setError(null);
 
     try {
-      const response = await axios.post("http://localhost:4000/api/user/login", {
-        email,
-        password,
-      });
-
-      
-      console.log("signIn successful:", response.data);
-      if (response.status === 200) {
+        const response = await axios.post('http://localhost:4000/api/user/login', { email, password });
+        setIsPending(false);
         console.log(response.data)
-        localStorage.setItem('user', JSON.stringify(response.data));  
-        localStorage.setItem('userToken', response.data.token);
-
-        console.log("User data saved:", response.user);
-      } else {
-        console.log("Login failed with status", response.status);
-      }
-
-      dispatch({ type: "LOGIN", payload: response.data });
-
+        localStorage.setItem("user", JSON.stringify(response.data)); // Assuming response.data has a user object
+        localStorage.setItem("userToken", response.data.token);
+        return response.data; // Ensure this returns an object
     } catch (err) {
-      setError(err.response?.data?.error || "signIn failed");
-    } finally {
-      setIsPending(false);
+        setIsPending(false);
+        setError(err.response?.data?.error || 'Login failed');
+        return { error: err.response?.data?.error || 'Login failed' }; // Ensure this returns an object
     }
-  };
+};
 
-  return { signIn, error, isPending };
+return { signIn, error, isPending };
 };

@@ -64,6 +64,14 @@ const userSchema = new Schema({
         type: Boolean,
         default: true
     },
+    following: [{
+        type: Schema.Types.ObjectId, 
+        ref: "User"
+    }],
+    followers: [{
+        type: Schema.Types.ObjectId, 
+        ref: "User"
+    }],
     isApproved :{
      type:Boolean, 
      default:function() {

@@ -1,5 +1,6 @@
 import { useState } from "react" 
 import { useSignIn } from "../hooks/useLogin";
+import bizznezzman from '../assets/151595661_d7fe0908-4a18-445f-940f-f15055e16c75-01.jpg'
 const Login =  ()=>{
   
     const [email, setEmail] = useState("");
@@ -8,15 +9,17 @@ const Login =  ()=>{
       const [showPass, setShowPass] = useState(false)
       const [showModal, setShowModal] = useState(false);
 
-    const handleLogin = async (e) => {
-  e.preventDefault();
+   
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  const result = await signIn(email, password);
-console.log(result)
-  if (result.error === "Your mentor account is awaiting approval") {
-    setShowModal(true);
-  }
-};
+    const result = await signIn(email, password);
+    console.log(result);
+
+    if (result.error === "Your mentor account is awaiting approval") {
+      setShowModal(true);
+    }
+  };
 
 
     return (
@@ -70,14 +73,14 @@ console.log(result)
                 </div> */}
 
                 <div className="text-sm">
-                  <a href="jajvascript:void(0);" className="text-green-600 hover:underline font-semibold">
+                  <a href="jajvascript:void(0);" className="text-secondary-light hover:underline font-semibold">
                     Forgot your password?
                   </a>
                 </div>
               </div>
 
               <div className="!mt-8">
-                <button type="submit" className="w-full shadow-xl py-2.5 px-4 text-sm tracking-wide rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none">
+                <button type="submit" className="w-full shadow-xl py-2.5 px-4 text-sm tracking-wide rounded-lg bg-primary-light text-white rounded-lg hover:bg-primary-dark focus:outline-none">
                 {isPending ? "loggin in" : " login"}
                 </button>
               </div>
@@ -87,7 +90,7 @@ console.log(result)
             </form>
           </div>
           <div className="max-md:mt-8">
-            <img src="https://readymadeui.com/login-image.webp" className="w-full aspect-[71/50] max-md:w-4/5 mx-auto block object-cover" alt="Dining Experience" />
+            <img src={bizznezzman} className="w-full h-full max-md:w-4/5 mx-auto block object-cover" alt="Dining Experience" />
           </div>
         </div>
       </div>
@@ -98,7 +101,7 @@ console.log(result)
               <p className="text-gray-600 mt-2">Your mentor account is awaiting approval. Please wait for confirmation.</p>
               <button
                 onClick={() => setShowModal(false)}
-                className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none"
+                className="mt-4 px-4 py-2 bg-primary-light text-white rounded-lg hover:bg-primary-dark focus:outline-none"
               >
                 OK
               </button>

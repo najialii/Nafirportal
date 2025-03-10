@@ -1,11 +1,13 @@
+import nafirLogo from '../assets/logo-01.jpg'
+
 const Footer = () => {
     return(
-        <footer className="bg-gradient-to-br from-green-900 to-green-400 pt-12 pb-6 px-10  tracking-wide">
+        <footer className="bg-gradient-to-br from-primary-dark to-primary-light pt-12 pb-6 px-10  tracking-wide">
       <div className="max-w-screen-xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="lg:flex lg:items-center">
             <a href="javascript:void(0)">
-              <img src="https://readymadeui.com/readymadeui-light.svg" alt="logo" className="w-48" />
+              <img src={nafirLogo} alt="logo" className="w-48 rounded-xl" />
             </a>
           </div>
 

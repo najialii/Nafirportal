@@ -5,7 +5,8 @@ const {
     login,
     approveMentor,
     getAccountsByApprovalStatus,
-    getCurrentUser
+    getCurrentUser, 
+    getUserById
 } = require('../controllers/usersController')
 
 const router = express.Router();
@@ -19,6 +20,8 @@ router.patch('/approve-mentor/:id', authMiddleware, roleMiddleware('admin'), app
 router.get('/accountsbystatus', authMiddleware, roleMiddleware('admin'), getAccountsByApprovalStatus);
 
 router.get('/me', authMiddleware, getCurrentUser);
+
+router.get('/:id', getUserById)
 
 module.exports = router
 

@@ -7,8 +7,9 @@ const genToken = (_id) => {
     return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '3d' });
 };
 
-// Signup user
+
 const signUp = async (req, res) => {
+    console.log(req.body);
     const { email, password, role, ...additionalData } = req.body;
 
     try {
@@ -16,6 +17,7 @@ const signUp = async (req, res) => {
         if (!email || !password) {
             throw new Error('Email and password are required');
         }
+        
         
         if (!validator.isEmail(email)) {
             throw new Error('Please enter a valid email address');
@@ -38,7 +40,7 @@ const signUp = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Prepare user based on role
-        let userData = { email, password: hashedPassword, role };
+        let userData = { email, password: hashedPassword, role, name:additionalData.name };
 
         // if (role === 'mentee') {
         //     if (!additionalData.country) {
@@ -143,10 +145,26 @@ const getCurrentUser = async (req, res) => {
     }
 };
 
+
+
+// ubid
+const getUserById = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
     signUp,
     login,
     approveMentor,
     getAccountsByApprovalStatus,
-    getCurrentUser
+    getCurrentUser,
+    getUserById
 };
