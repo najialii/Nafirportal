@@ -1,11 +1,19 @@
 import {useEffect, useRef, useState } from 'react'
-
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
 import axios from 'axios'
 // import { sum } from '../sum.js';  // Correct import
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 console.log('API Base URL:', apiBaseUrl);
 import Nav from '../src/components/navbar'
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
 import { Button, ConfigProvider, Space } from 'antd';
+>>>>>>> 7613e493 (Add activities endpoint and feedback message after adding new activity)
+=======
+import { Button, ConfigProvider, Space } from 'antd';
+>>>>>>> e0c74c8078fe1ca549f086117475ce283a674a88
 
 import Footer from './components/footer';
 import AppRoutes from './components/router';
@@ -43,6 +51,11 @@ function App() {
 
   return (
     <>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> e0c74c8078fe1ca549f086117475ce283a674a88
       <ConfigProvider
     theme={{
       token: {
@@ -57,6 +70,10 @@ function App() {
   >
 
 <div className='font-expoAr '>
+<<<<<<< HEAD
+>>>>>>> 7613e493 (Add activities endpoint and feedback message after adding new activity)
+=======
+>>>>>>> e0c74c8078fe1ca549f086117475ce283a674a88
 
     <Nav />
 
@@ -72,10 +89,21 @@ function App() {
 
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+      <Footer />
+=======
+      <Footer /> 
+      </div>
+
+      </ConfigProvider>
+>>>>>>> 7613e493 (Add activities endpoint and feedback message after adding new activity)
+=======
       {/* <Footer />  */}
       </div>
 
       </ConfigProvider>
+>>>>>>> e0c74c8078fe1ca549f086117475ce283a674a88
     </>
   )
 

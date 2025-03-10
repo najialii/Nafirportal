@@ -70,6 +70,7 @@ const connectionRoutes = require('./routes/connectRouter')
         if (!users.some(user => user.userId === userId)) {
             users.push({ userId, socketId });
         } else {
+            // If the user  existsupdate their socket ID
             users = users.map(user =>
                 user.userId === userId ? { userId, socketId } : user
             );

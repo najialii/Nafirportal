@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
-const mongosePaginate = require('mongoose-paginate-v2')
-const Schema = mongoose.Schema;
-
-
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const skills  = [
     "Software Development",
@@ -12,8 +9,9 @@ const skills  = [
     "Data Science",
     "Cybersecurity",
     "Graphic Design"
-]
-const mentorSessionsSchema = new Schema({
+];
+
+const mentorSessionSchema = new mongoose.Schema({
     mentorId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -58,8 +56,24 @@ const mentorSessionsSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    title: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    date: {
+        type: Date,
+        required: true,
+    }
 }, {
     timestamps: true
 });
-mentorSessionsSchema.plugin(mongosePaginate)
-module.exports = mongoose.model('MentorSession', mentorSessionsSchema);
+
+mentorSessionSchema.plugin(mongoosePaginate);
+
+const MentorSession = mongoose.model('MentorSession', mentorSessionSchema);
+
+module.exports = MentorSession;
