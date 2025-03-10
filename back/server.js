@@ -29,6 +29,7 @@
     const userRoutes = require('./routes/userRoutes');
     const cvRoutes = require("./routes/cvrouts");
     const chatRoutes = require('./routes/chatRoute');
+    const blogs = require('./routes/blogsRoutes');
     // const Chat = require('./models/chat'); // Import the Chat model
 const connectionRoutes = require('./routes/connectRouter')
 
@@ -60,6 +61,7 @@ const connectionRoutes = require('./routes/connectRouter')
     app.use("/api/conversation", convroutes);
     app.use("/api/messages", Message);
     app.use("/api/connect", connectionRoutes);
+    app.use("/api/blogs", blogs);
 
 
 

@@ -1,7 +1,7 @@
 const Blogs = require('../models/blogsmod');
 const User = require('../models/userModle');
 
-// Create a new blog
+
 const createBlog = async (req, res) => {
     try {
         const { title, content, authorId } = req.body;
@@ -24,7 +24,7 @@ const createBlog = async (req, res) => {
     }
 };
 
-// Get all blogs
+
 const getBlogs = async (req, res) => {
     try {
         const blogs = await Blogs.find().populate('author', 'name email');
@@ -34,7 +34,7 @@ const getBlogs = async (req, res) => {
     }
 };
 
-// Update a blog
+
 const updateBlog = async (req, res) => {
     try {
         const { id } = req.params;
@@ -56,7 +56,7 @@ const updateBlog = async (req, res) => {
     }
 };
 
-// Delete a blog
+
 const deleteBlog = async (req, res) => {
     try {
         const { id } = req.params;
