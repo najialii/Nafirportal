@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { List, Avatar, Button, Skeleton, Tag, message } from 'antd';
 import useAuthContext from '../hooks/useAuthContext';
-import mentorImg from '../assets/studio-portrait-beautiful-young-woman-posing.jpg';
+import mentorImg from '../assets/WhatsApp Image 2025-03-08 at 01.01.56_b5b5a7a1.jpg';
 
 const MentorCard = () => {
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const MentorCard = () => {
 
   return (
 
-    <div className='bg-gray-100  flex flex-col justify-center '>
+    <div className='bg-gray-100   '>
     <List
       className="mentor-list"
       loading={loading}
@@ -64,7 +64,7 @@ const MentorCard = () => {
         >
           <Skeleton avatar title={false} loading={loading} active>
             <List.Item.Meta
-              avatar={<Avatar src={mentor.mentorImage || mentorImg} size={40} />}
+              avatar={<Avatar src={mentor.mentorImage || mentorImg} size={32} />}
               title={<a onClick={() => navigate(`/mentor/${mentor._id}`)}>{mentor.mentorName}</a>}
               description={
                 <div className='bg-white max-w-[500px] p-2'>
