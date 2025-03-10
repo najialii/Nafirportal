@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Card, Row, Col, Button, Typography, Tag } from "antd";
 import FollowButton from "../components/followBtn";
 import pimage from "../assets/studio-portrait-beautiful-young-woman-posing.jpg";
+
+const { Title, Text } = Typography;
 
 const UserPro = () => {
     const { userId } = useParams(); 
@@ -50,87 +53,68 @@ const UserPro = () => {
 
     return (
         <>
-        <div className="">
-            {/* <div className="flex justify-start gap-4 bg-gray-50 px-20 py-[80px]">
-                <div>
-                    <img className="rounded-md h-56" src={pimage} alt="Profile" />
-                </div>
+            <div className="user-profile">
+                <Card
+                    hoverable
+                    cover={
+                        <img
+                            alt="Cover"
+                            src={pimage}
+                            style={{ height: 250, objectFit: "cover", width: "100%" }}
+                        />
+                    }
+                    style={{ width: "100%" }}
+                >
+                    <Row gutter={16}>
+                        <Col span={6}>
+                            <img
+                                src={pimage}
+                                alt="Profile"
+                                style={{
+                                    width: 100,
+                                    height: 100,
+                                    borderRadius: "50%",
+                                    border: "4px solid white",
+                                    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                                }}
+                            />
+                        </Col>
+                        <Col span={18}>
+                            <Title level={2}>{user?.name}</Title>
+                            <div>
+                                <Text>{user?.followers.length} followers</Text> | 
+                                <Text>{user?.following.length} following</Text>
+                            </div>
+                            {currentUser && currentUser._id !== user._id && (
+                                <FollowButton userId={user._id} currentUserId={currentUser._id} />
+                            )}
+                        </Col>
+                    </Row>
 
-                <div className="flex flex-col">
-                    <p className="text-xl font-extrabold">{user?.name}</p>
-                    <div className="flex gap-4">
-                        <p>{user?.followers.length} followers</p>
-                        <p>{user?.following.length} following</p>
+                    <Text type="secondary" className="mt-2">
+                        Hi, I'm a passionate developer with expertise in Node.js, React, and Tailwind CSS. I love building efficient and scalable web applications.
+                    </Text>
+
+                    <div className="mt-4">
+                        <Title level={4}>Skills</Title>
+                        <div>
+                            {user?.skills?.map((skill, index) => (
+                                <Tag  key={index}>
+                                    {skill}
+                                </Tag>
+                            ))}
+                        </div>
                     </div>
-                    <div className=" flex gap-2 pt-2">
-  {user?.skills?.map((skill, index) => {
-    return (
-        <span className="bg-white border border-primary-light p-1.5 " key={index}>
-        {skill}
-      </span>
-    );
-  })}
-</div>
 
-                    {currentUser && currentUser._id !== user._id && (
-                        <FollowButton userId={user._id} currentUserId={currentUser._id} />
-                    )}
-
-                </div>
-            </div> */}
-        </div>
-        <div class="max-w-full ">
-  
-
-    <div class="bg-white  rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
-      <div class="relative h-48">
-        <img src={pimage} alt="Cover" class="w-full h-full object-cover"/>
-        <div class="absolute -bottom-12 left-6">
-          <img src={pimage} alt="Profile" class="w-24 h-24 rounded-xl object-cover border-4 border-white shadow-lg"/>
-        </div>
-      </div>
-
-      <div class="pt-16 px-6 pb-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 class="text-2xl font-bold text-gray-900 ">{user?.name}</h1>
-            <div className="flex gap-4">
-                        <p>{user?.followers.length} followers</p>
-                        <p>{user?.following.length} following</p>
+                    <div className="mt-4">
+                        <Title level={4}>About</Title>
+                        <Text>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur iusto provident deleniti, numquam aspernatur voluptates modi et iste ducimus similique molestiae enim animi ea aperiam velit repudiandae cupiditate perferendis impedit.
+                        </Text>
                     </div>
-          </div>
-          {currentUser && currentUser._id !== user._id && (
-                        <FollowButton userId={user._id} currentUserId={currentUser._id} />
-                    )}
-        </div>
-
-        <p class="mt-6 text-gray-600 dark:text-gray-300">
-          Hi, I'm a passionate developer with expertise in Node.js, React, and Tailwind CSS. I love building efficient and scalable web applications.
-        </p>
-
-        <div class="mt-6">
-          <h2 class="text-lg font-semibold text-gray-900  mb-3">Skills</h2>
-          <div class="flex flex-wrap gap-2">
-          {user?.skills?.map((skill, index) => {
-    return (
-        <span className="bg-white border border-primary-light p-1.5 " key={index}>
-        {skill}
-      </span>
-    );
-  })}
-          </div>
-        </div>
-
-        <div class="mt-6">
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">about</h2>
-       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur iusto provident deleniti, numquam aspernatur voluptates modi et iste ducimus similique molestiae enim animi ea aperiam velit repudiandae cupiditate perferendis impedit.
-       </p>
-        </div>
-      </div>
-    </div>
-  </div>
-                    </>
+                </Card>
+            </div>
+        </>
     );
 };
 
