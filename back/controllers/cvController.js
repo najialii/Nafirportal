@@ -1,6 +1,7 @@
 const pdfParse = require("pdf-parse");
 const mammoth = require("mammoth");
 const fs = require("fs");
+const path = require("path");
 const CV = require("../models/cv");
 
 const REQUIRED_SECTIONS = ["education", "experience", "skills"];
@@ -67,7 +68,6 @@ const buildCVFromData = async (text) => {
     missingFields.push("Skills");
   }
 
-  
 
   const cvContent = `
     Name: ${name}
@@ -97,17 +97,17 @@ const buildCVFromData = async (text) => {
 exports.uploadCV = async (req, res) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
-  const { path, mimetype, originalname } = req.file;
+  const { path: filePath, mimetype, originalname } = req.file;
   let text = "";
 
   try {
     if (mimetype === "application/pdf") {
-      const data = await pdfParse(fs.readFileSync(path));
+      const data = await pdfParse(fs.readFileSync(filePath));
       text = data.text;
     } else if (
       mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     ) {
-      text = await extractTextFromDocx(path);
+      text = await extractTextFromDocx(filePath);
     } else {
       return res.status(400).json({ error: "Unsupported file format" });
     }
@@ -120,14 +120,15 @@ exports.uploadCV = async (req, res) => {
       // Execute CV builder using the extracted data
       const builtCV = await buildCVFromData(text);
       const templates = [
-        "Template 1: Modern",
-        "Template 2: Professional",
-        "Template 3: Creative",
+        `${req.protocol}://${req.get('host')}/templates/template1.html`,
+        `${req.protocol}://${req.get('host')}/templates/template2.html`,
+        `${req.protocol}://${req.get('host')}/templates/template3.html`,
       ];
       return res.json({
         message: "CV needs improvement. Here is a suggested CV and some templates to use:",
         atsScore: result.atsScore,
         missingSections: result.missingSections,
+        cvContent: builtCV.cvContent,
         templates: templates,
       });
     } else {
@@ -149,7 +150,7 @@ exports.uploadCV = async (req, res) => {
     console.error("Error processing file:", error);
     res.status(500).json({ error: error.message });
   } finally {
-    fs.unlinkSync(path); 
+    fs.unlinkSync(filePath); 
   }
 };
 
