@@ -12,7 +12,8 @@
 
 
 
-    app.use(express.json());
+    app.use(express.json({ limit: '1000mb' }));
+
     app.use(cors({
         origin: "http://localhost:5173",
         methods: ["GET", "POST", "PATCH"],
@@ -30,6 +31,7 @@
     const cvRoutes = require("./routes/cvrouts");
     const chatRoutes = require('./routes/chatRoute');
     const blogs = require('./routes/blogsRoutes');
+    const act = require('./routes/activityRoutes') 
     // const Chat = require('./models/chat'); // Import the Chat model
 const connectionRoutes = require('./routes/connectRouter')
 
@@ -62,6 +64,7 @@ const connectionRoutes = require('./routes/connectRouter')
     app.use("/api/messages", Message);
     app.use("/api/connect", connectionRoutes);
     app.use("/api/blogs", blogs);
+    app.use("/api/act", act);
 
 
 

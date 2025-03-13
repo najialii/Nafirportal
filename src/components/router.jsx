@@ -18,6 +18,9 @@ import SessionsPage from '../pages/sessionspage'
 import MentSessions from '../pages/mentor/sessions'
 import DashLayout from '../pages/admin/admindash'
 import UserPro from "../pages/userprofile";
+import BlogPost from '../pages/blogpost'
+import CreateBlog  from '../components/addblogs'
+import Blogpage from "../pages/blogspage";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -37,6 +40,9 @@ const AppRoutes = () => {
       <Route path="/profile/:userId" element={<UserPro />} />
 
       <Route path="/sessions" element={<SessionsPage/>} />
+      <Route path="/blogs" element={<BlogPost/>} />
+      <Route path="/blog/:id" element={<Blogpage/>} />
+      <Route path="/createblog" element={<CreateBlog/>} />
 
       {/* <Route path="/addsession" element={<AddSession />} /> */}
       <Route path="/profile/me" element={<DashLayout><UserPro /></DashLayout>} />
