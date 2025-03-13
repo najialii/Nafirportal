@@ -1,4 +1,6 @@
-    require('dotenv').config();
+require('dotenv').config();
+const activityRoutes = require('./routes/activityRoutes');
+const departmentRoutes = require('./routes/departmentRoutes');
 //    const { v4: uuidv4 } = require('uuid'); 
     const express = require('express');
     const mongoose = require('mongoose');
@@ -9,9 +11,6 @@
 
 
     const app = express();
-
-
-
     app.use(express.json());
     app.use(cors({
         origin: "http://localhost:5173",
@@ -60,6 +59,10 @@ const connectionRoutes = require('./routes/connectRouter')
     app.use("/api/conversation", convroutes);
     app.use("/api/messages", Message);
     app.use("/api/connect", connectionRoutes);
+    app.use('/api/department', departmentRoutes);
+    app.use('/api/activity', activityRoutes);
+    
+    
 
 
 
