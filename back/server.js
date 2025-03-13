@@ -6,10 +6,9 @@ const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
 const cvRoutes = require('./routes/cvrouts');
-
 const activityRoutes = require('./routes/activityRoutes');
-const departmentRoutes = require('./routes/departmentRoutes');
 
+const departmentRoutes = require('./routes/departmentRoutes');
 const app = express();
 app.use(express.json());
 app.use(cors({
@@ -30,6 +29,9 @@ app.use('/templates', express.static(path.join(__dirname, 'templates')));
 
 // Use the CV routes
 app.use('/api/cvs', cvRoutes);
+
+// Use the activity routes
+app.use('/api/activities', activityRoutes);
 
 // Other routes...
 const mentorsessions = require('./routes/mentorSessions');

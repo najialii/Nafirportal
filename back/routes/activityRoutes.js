@@ -6,6 +6,7 @@ const {
   updateActivity,
   deleteActivity,
   registerUser,
+  getAllActivities, // Import the new controller function
 } = require('../controllers/activityController');
 
 // Get all activities for a user
@@ -22,5 +23,8 @@ router.delete('/:activityId', deleteActivity);
 
 // Register a user for an activity
 router.post('/:activityId/register', registerUser);
+
+// Get all activities
+router.get('/', getAllActivities); // Add the new route
 
 module.exports = router;

@@ -68,6 +68,7 @@ const buildCVFromData = async (text) => {
     missingFields.push("Skills");
   }
 
+ 
 
   const cvContent = `
     Name: ${name}
@@ -120,9 +121,9 @@ exports.uploadCV = async (req, res) => {
       // Execute CV builder using the extracted data
       const builtCV = await buildCVFromData(text);
       const templates = [
-        `${req.protocol}://${req.get('host')}/templates/template1.html`,
-        `${req.protocol}://${req.get('host')}/templates/template2.html`,
-        `${req.protocol}://${req.get('host')}/templates/template3.html`,
+        `${req.protocol}://${req.get('host')}/templates/template1.docx`,
+        `${req.protocol}://${req.get('host')}/templates/template2.docx`,
+        `${req.protocol}://${req.get('host')}/templates/template3.docx`,
       ];
       return res.json({
         message: "CV needs improvement. Here is a suggested CV and some templates to use:",
