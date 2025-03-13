@@ -1,4 +1,6 @@
-    require('dotenv').config();
+require('dotenv').config();
+const activityRoutes = require('./routes/activityRoutes');
+const departmentRoutes = require('./routes/departmentRoutes');
 //    const { v4: uuidv4 } = require('uuid'); 
     const express = require('express');
     const mongoose = require('mongoose');
@@ -63,6 +65,10 @@ const connectionRoutes = require('./routes/connectRouter')
     app.use("/api/conversation", convroutes);
     app.use("/api/messages", Message);
     app.use("/api/connect", connectionRoutes);
+    app.use('/api/department', departmentRoutes);
+    app.use('/api/activity', activityRoutes);
+    
+    
     app.use("/api/blogs", blogs);
     app.use("/api/act", act);
 
