@@ -54,10 +54,89 @@ app.use('/api/activity', activityRoutes);
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
+    const app = express();
+
+
+
+    app.use(express.json({ limit: '1000mb' }));
+
+    app.use(cors({
         origin: "http://localhost:5173",
         methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type", "Authorization"],
         credentials: true
+    }));
+
+    const mentorsessions = require('./routes/mentorSessions');
+    const convroutes = require('./routes/convroutes')
+    const Message = require('./routes/msgroutes')
+
+
+    const menreq = require('./routes/menSesReq');
+    const userRoutes = require('./routes/userRoutes');
+    const cvRoutes = require("./routes/cvrouts");
+    const chatRoutes = require('./routes/chatRoute');
+    const blogs = require('./routes/blogsRoutes');
+    const act = require('./routes/activityRoutes') 
+    // const Chat = require('./models/chat'); // Import the Chat model
+const connectionRoutes = require('./routes/connectRouter')
+
+
+
+    const server = http.createServer(app);
+    const io = new Server(server, {
+        cors: {
+            origin: "http://localhost:5173",
+            methods: ["GET", "POST"],
+            allowedHeaders: ["Content-Type", "Authorization"],
+            credentials: true
+        }
+    });
+
+
+    app.use((req, res, next) => {
+        console.log('Middleware executed');
+        console.log(req.path, req.method);
+        next();
+    });
+
+    // Routes
+    app.use('/api/mentorsessions', mentorsessions);
+    app.use("/api/requestsession", menreq);
+    app.use("/api/user", userRoutes);
+    app.use("/api/cvs", cvRoutes);
+  //  app.use("/api/chat", chatRoutes);
+    app.use("/api/conversation", convroutes);
+    app.use("/api/messages", Message);
+    app.use("/api/connect", connectionRoutes);
+    app.use('/api/department', departmentRoutes);
+    app.use('/api/activity', activityRoutes);
+    
+    
+    app.use("/api/blogs", blogs);
+    app.use("/api/act", act);
+
+
+
+    // chat functionality  
+    let users = [] 
+    const addUser = (userId, socketId) => {
+        
+        if (!users.some(user => user.userId === userId)) {
+            users.push({ userId, socketId });
+        } else {
+            // If the user  existsupdate their socket ID
+            users = users.map(user =>
+                user.userId === userId ? { userId, socketId } : user
+            );
+        }
+        console.log('here are the users array',users)
+    };
+    
+    
+   
+    const RemoveUser = (socketId)=>{
+        users = users.filter(user => user.socketId !== socketId)
     }
 });
 

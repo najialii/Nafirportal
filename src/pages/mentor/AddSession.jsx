@@ -191,6 +191,7 @@ const AddSession = ({ mentorId }) => {
                 <RangePicker
                   format="HH:mm"
                   value={selectedTime}
+                  suffixIcon="ab" showTime
                   onChange={(times) => setSelectedTime(times || [null, null])}
                   style={{ width: "45%" }}
                 />

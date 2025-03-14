@@ -10,7 +10,7 @@ const {
 } = require('../controllers/activityController');
 
 // Get all activities for a user
-router.get('/:userId', getActivities);
+router.get('/', getActivities);
 
 // Create a new activity for a user
 router.post('/:userId', createActivity);
