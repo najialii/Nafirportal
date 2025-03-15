@@ -21,7 +21,7 @@ const createActivity = async (req, res) => {
     description,
     name,
     location,
-    link,
+    link, 
     meeting_id,
     passcode,
     date,
