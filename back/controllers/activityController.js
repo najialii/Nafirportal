@@ -25,7 +25,7 @@ if(!departmentId){
     description,
     name,
     location,
-    link,
+    link, 
     meeting_id,
     passcode,
     date,
@@ -120,10 +120,23 @@ const registerUser = async (req, res) => {
   }
 };
 
+
+// Get all activities
+const getAllActivities = async (req, res) => {
+  try {
+    const activities = await Activity.find();
+    res.status(200).json(activities);
+  } catch (err) {
+    res.status(500).json({ error: 'Error fetching activities' });
+  }
+
+};
+
 module.exports = {
   getActivities,
   createActivity,
   updateActivity,
   deleteActivity,
   registerUser,
+  getAllActivities,
 };
