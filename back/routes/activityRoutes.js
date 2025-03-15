@@ -12,7 +12,7 @@ const {
 router.get('/', getActivities);
 
 // Create a new activity for a user
-router.post('/:userId', createActivity);
+router.post('/', createActivity);
 
 // Update an activity
 router.put('/:activityId', updateActivity);

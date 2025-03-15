@@ -21,6 +21,9 @@ import UserPro from "../pages/userprofile";
 import BlogPost from '../pages/blogpost'
 import CreateBlog  from '../components/addblogs'
 import Blogpage from "../pages/blogspage";
+import Activities from '../pages/activities'
+import Activitiespage  from '../pages/activitiespage'
+import  CreateActivity from '../pages/createact'
 const AppRoutes = () => {
   return (
     <Routes>
@@ -38,13 +41,17 @@ const AppRoutes = () => {
       <Route path="/messanger/:conversationId" element={<Messanger/>} />
       <Route path="/profile" element={<Profile/>} />
       <Route path="/profile/:userId" element={<UserPro />} />
+      <Route path="/activities" element={<Activities />} />
+      <Route path="/activities/:id" element={<Activitiespage />} />
 
       <Route path="/sessions" element={<SessionsPage/>} />
       <Route path="/blogs" element={<BlogPost/>} />
       <Route path="/blog/:id" element={<Blogpage/>} />
       <Route path="/createblog" element={<CreateBlog/>} />
 
+      {/* <Route path="/createActivity" element={<CreateActivity/>} /> */}
       {/* <Route path="/addsession" element={<AddSession />} /> */}
+      <Route path="/createActivity" element={<DashLayout><CreateActivity /></DashLayout>} />
       <Route path="/profile/me" element={<DashLayout><UserPro /></DashLayout>} />
       <Route path="/men-sessions" element={<DashLayout><MentSessions /></DashLayout>} />
       <Route path="/addsession" element={<DashLayout><AddSession /></DashLayout>} />

@@ -10,7 +10,7 @@ import { UserOutlined } from '@ant-design/icons';
 
 import {Avatar} from 'antd'
 
-import nafirLogo from '../assets/logo-01.jpg'
+import nafirLogo from '../assets/naflogo-01.svg'
 const Nav = () => {
   const { user } = useAuthContext();
 
@@ -58,10 +58,10 @@ const Nav = () => {
             </li>
             <li>
               <Link
-                to="/mentor/:id"
+                to="/blogs"
                 className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primary-light md:p-0 dark:text-gray-900 md:dark:hover:text-primary-light dark:hover:bg-gray-700 dark:hover:text-gray-900 md:dark:hover:bg-transparent"
               >
-                link
+                blog
               </Link>
             </li>
             <li>
@@ -108,7 +108,7 @@ const Nav = () => {
               
 
 
-        <button className="  shadow-md  h-8 w-8 flex justify-center items-center rounded-full ">
+        <button className="  shadow-md  h-8 w-8 flex  justify-center items-center rounded-full ">
                 <Link to="/profile/me"><Avatar size={28} color={"#221F42"} icon={<UserOutlined />} /></Link>
               </button>
               </div>

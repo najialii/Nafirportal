@@ -1,7 +1,7 @@
 
 export const adminMenu = [
     { label: "Dashboard", path: "/admin/dashboard" },
-    { label: "Users", path: "/admin/users" },
+    { label: "Activity", path: "/createActivity" },
     { label: "Settings", path: "/admin/settings" },
   ];
   

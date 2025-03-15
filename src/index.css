@@ -15,8 +15,31 @@
   background-color: var(--color-primary);
 }
 
-
+/* 
 body {
     font-family: "El Messiri", sans-serif;
   }
+   */
+
+   @font-face {
+    font-family: "Expo";
+    src: url("./assets/fonts/ExpoArabic-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Expo";
+    src: url("./assets/fonts/ExpoArabic-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Expo";
+    src: url("./assets/fonts/ExpoArabic-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+  }
+  
   

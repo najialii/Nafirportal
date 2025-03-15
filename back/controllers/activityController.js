@@ -14,9 +14,13 @@ const getActivities = async (req, res) => {
 
 // Create a new activity for a user
 const createActivity = async (req, res) => {
-  const { description, name, departmentId, location, link, meeting_id, passcode, date, time, status } = req.body;
+  const { description, name,userId, departmentId, location, link, meeting_id, passcode, date, time, status } = req.body;
+  // const userId = req.user.id
+if(!departmentId){
+  return res.status(404).json({message: 'user is no depart '})
+}
   const activity = new Activity({
-    userId: req.params.userId,
+    userId,  
     departmentId,
     description,
     name,
@@ -36,7 +40,7 @@ const createActivity = async (req, res) => {
       activity: newActivity
     });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 

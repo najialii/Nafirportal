@@ -33,7 +33,6 @@ const departmentRoutes = require('./routes/departmentRoutes');
     const cvRoutes = require("./routes/cvrouts");
     const chatRoutes = require('./routes/chatRoute');
     const blogs = require('./routes/blogsRoutes');
-    const act = require('./routes/activityRoutes') 
     // const Chat = require('./models/chat'); // Import the Chat model
 const connectionRoutes = require('./routes/connectRouter')
 
@@ -67,10 +66,8 @@ const connectionRoutes = require('./routes/connectRouter')
     app.use("/api/connect", connectionRoutes);
     app.use('/api/department', departmentRoutes);
     app.use('/api/activity', activityRoutes);
-    
-    
     app.use("/api/blogs", blogs);
-    app.use("/api/act", act);
+
 
 
 
