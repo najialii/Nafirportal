@@ -2,19 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Input, Button, DatePicker, TimePicker, Select } from 'antd';
 import useAuthContext from '../hooks/useAuthContext.js'
+const { Option } = Select;
+const {TextArea} = Input
 const CreateActivity = () => {
   const [form] = Form.useForm();
   const user = useAuthContext()
 const  [dep , setDep] = useState([])
-const [selectedep , setSelectedDep] = useState(null)
+const [selectedep , setSelectedDep] = useState()
   const userId = user?.user?.userid
 
-  const { Option } = Select;
   const getdep = async()=>{
 
     const response = await axios.get('http://localhost:4000/api/department')
     console.log(response.data)
-    setDep(response.data) 
+    setDep(response.data)
+    console.log('here are the dep',response.data.data) 
 
 }
 
@@ -26,17 +28,8 @@ useEffect(()=>{
 
 
 useEffect(()=>{
-    selectedep
+    console.log('the axdsadsa',selectedep)
 },[selectedep])
-
-
-
-
-
-
-
-
-
 
 
   console.log(user)
@@ -44,7 +37,7 @@ useEffect(()=>{
     try {
       const formData = {
           userId,
-          departmentId:selectedep,
+          departmentId :selectedep,
         ...values,
         date: values.date.format('YYYY-MM-DD'),
         time: values.time.format('HH:mm'),
@@ -62,32 +55,28 @@ useEffect(()=>{
   };
 
   return (
+    
     <Form form={form} onFinish={handleSubmit} layout="vertical">
-      {/* <Form.Item name="departmentId" label="Department ID" rules={[{ required: true, message: 'Required' }]}> 
-        <Input placeholder="Department ID" />
-      </Form.Item> */}
      
       <Form.Item name="name" label="Activity Name" rules={[{ required: true, message: 'Required' }]}> 
         <Input placeholder="Activity Name" />
       </Form.Item>
 
-      <Form.Item name="name" label="department " rules={[{ required: true, message: 'Required' }]}> 
-   
+     
       <Select
        style={{ width: 200 }}
        placeholder="Select Department"
        onChange={(value) => setSelectedDep(value)}
       >
         {dep.map((department)=>(
-            <Option key={department.id} value={department.id}>
+            <Option key={department._id} value={department.id}>
                 {department.name}
             </Option>
         ))}
-
       </Select>
-      </Form.Item>
+ 
       <Form.Item name="description" label="Description" rules={[{ required: true, message: 'Required' }]}> 
-        <Input placeholder="Description" />
+        <TextArea rows={7} placeholder="Description" />
       </Form.Item>
       <Form.Item name="location" label="Location" rules={[{ required: true, message: 'Required' }]}> 
         <Input placeholder="Location" />

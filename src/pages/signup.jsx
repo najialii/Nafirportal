@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Input, Button, Modal, Typography } from "antd";
+
+
+const { Text, Link } = Typography;
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -21,6 +25,8 @@ const Signup = () => {
       e.preventDefault();
       setLoading(true);
       setError('');
+
+      console.log('many man')
   
       // console.l  og("User Data before sending:", { email, password, role, name });
   
@@ -57,10 +63,10 @@ const Signup = () => {
       <div className='py-[80px] bg-gray-50'>
   
         <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-center text-[#027384] text-2xl mb-6">Signup</h2>
+            <h2 className="text-center text-primary-light text-2xl mb-6">Signup</h2>
             <form onSubmit={handleSubmit}>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Email:</label>
-                <input
+                <Input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -69,7 +75,7 @@ const Signup = () => {
                 />
 
                 <label className="block text-sm font-medium text-gray-700 mb-2">Password:</label>
-                <input
+                <Input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -89,7 +95,7 @@ const Signup = () => {
                 </select>
 
                 <label className="block text-sm font-medium text-gray-700 mb-2">Name:</label>
-                        <input
+                        <Input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -102,7 +108,7 @@ const Signup = () => {
                        
 
                         <label className="block text-sm font-medium text-gray-700 mb-2">Profile Picture URL:</label>
-                        <input
+                        <Input
                             type="text"
                             value={profilePicture}
                             onChange={(e) => setProfilePicture(e.target.value)}
@@ -110,7 +116,7 @@ const Signup = () => {
                         />
 
                         <label className="block text-sm font-medium text-gray-700 mb-2">Skills:</label>
-                        <input
+                        <Input
                             type="text"
                             value={skills}
                             onChange={(e) => setSkills(e.target.value.split(','))}
@@ -124,7 +130,7 @@ const Signup = () => {
                 {role === 'mentor' || role === 'admin' && (
                     <>
                         <label className="block text-sm font-medium text-gray-700 mb-2">LinkedIn Profile URL:</label>
-                        <input
+                        <Input
                             type="text"
                             value={linkedinProfile}
                             onChange={(e) => setLinkedinProfile(e.target.value)}
@@ -132,7 +138,7 @@ const Signup = () => {
                         />
 
                         <label className="block text-sm font-medium text-gray-700 mb-2">Experience Years:</label>
-                        <input
+                        <Input
                             type="number"
                             value={experienceYears}
                             onChange={(e) => setExperienceYears(Number(e.target.value))}
@@ -140,7 +146,7 @@ const Signup = () => {
                         />
 
                         <label className="block text-sm font-medium text-gray-700 mb-2">Industry:</label>
-                        <input
+                        <Input
                             type="text"
                             value={industry}
                             onChange={(e) => setIndustry(e.target.value)}
@@ -148,7 +154,7 @@ const Signup = () => {
                         />
 
                         <label className="block text-sm font-medium text-gray-700 mb-2">Availability:</label>
-                        <input
+                        <Input
                             type="checkbox"
                             checked={availability}
                             onChange={() => setAvailability(!availability)}
@@ -157,13 +163,14 @@ const Signup = () => {
                     </>
                 )}
 
-                <button
-                    type="submit"
-                    disabled={loading}
+                <Button
+                    // type="submit"
+                    htmlType='submit'
+                    type='primary'
                     className={`w-full p-3 text-white text-lg rounded-md cursor-pointer transition-all duration-300 ${loading ? 'bg-gray-400' : 'bg-green-800 hover:bg-green-900'}`}
                 >
-                    {loading ? 'Creating Account...' : 'Sign Up'}
-                </button>
+                       {loading ? "Logging in" : "Login"}
+                </Button>
 
                 {error && <p className="text-center text-red-500 text-sm mt-4">{error}</p>}
             </form>

@@ -3,8 +3,9 @@ const mammoth = require("mammoth");
 const fs = require("fs");
 const path = require("path");
 const CV = require("../models/cv");
+// const multer  = require('multer')
 
-const REQUIRED_SECTIONS = ["education", "experience", "skills"];
+const REQUIRED_SECTIONS = ["education", "experience", "skills", "contact"];
 
 const extractTextFromDocx = async (filePath) => {
   const result = await mammoth.extractRawText({ path: filePath });
@@ -85,7 +86,7 @@ const buildCVFromData = async (text) => {
     ${skills.map(skill => `- ${skill}`).join('\n')}
   `;
 
-  const atsScore = 100; // Assuming a perfect score for a manually built CV
+  const atsScore = 100;
   const missingSections = [];
 
   return {
@@ -96,7 +97,7 @@ const buildCVFromData = async (text) => {
 };
 
 exports.uploadCV = async (req, res) => {
-  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  // if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
   const { path: filePath, mimetype, originalname } = req.file;
   let text = "";
@@ -109,6 +110,7 @@ exports.uploadCV = async (req, res) => {
       mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     ) {
       text = await extractTextFromDocx(filePath);
+    
     } else {
       return res.status(400).json({ error: "Unsupported file format" });
     }
@@ -130,7 +132,7 @@ exports.uploadCV = async (req, res) => {
         atsScore: result.atsScore,
         missingSections: result.missingSections,
         cvContent: builtCV.cvContent,
-        templates: templates,
+        templates,
       });
     } else {
       const newCV = await CV.create({

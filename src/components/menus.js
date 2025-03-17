@@ -1,13 +1,13 @@
 
 export const adminMenu = [
-    { label: "Dashboard", path: "/admin/dashboard" },
-    { label: "Activity", path: "/createActivity" },
-    { label: "Settings", path: "/admin/settings" },
+    { label: "Dashboard", path: "/dashboard/dashboard" },
+    { label: "Activities", path: "/dashboard/createActivity" },
+    // { label: "messages", path: "../dashboard/pages/messanger" },
   ];
   
   export const mentorMenu = [
     { label: "Profile", path: "/profile/me" },
-    { label: "add session", path: "/addsession" },
+    { label: "add session", path: "/mentor/dashboard/addsession" },
     { label: "session Requests", path: "/men-sessions" },
   ];
   

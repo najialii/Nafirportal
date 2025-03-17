@@ -58,15 +58,15 @@ const mentorSessionSchema = new mongoose.Schema({
     },
     title: {
         type: String,
-        required: true,
+        // required: true,
     },
     description: {
         type: String,
-        required: true,
+        // required: true,
     },
     date: {
         type: Date,
-        required: true,
+//        required: true,
     }
 }, {
     timestamps: true

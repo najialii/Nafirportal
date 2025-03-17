@@ -105,9 +105,12 @@ const AddSession = ({ mentorId }) => {
         aboutMentor:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. A cupiditate asperiores doloremque doloribus architecto distinctio ratione voluptas aliquid accusantium ad laudantium modi eum rerum, sit dolore odio voluptatem quod fuga.",
         skills: updatedSkills,
-        availableTimes,
+         availableTimes,
+         date : Date.now(), 
+         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit", 
+         title : 'javascript'
       };
-      console.log(sessionData);
+      console.log('the paylod',sessionData);
       const token = localStorage.getItem("userToken");
       const response = await axios.post(
         "http://localhost:4000/api/mentorsessions",
@@ -164,6 +167,11 @@ const AddSession = ({ mentorId }) => {
                 <Input />
               </AutoComplete>
             </Form.Item>
+
+
+              <Form.Item>
+              <Input value={mentor.name} disabled />
+              </Form.Item>
             {/* 
             <div className="flex flex-wrap gap-2">
               {mentorSkills.map((skill, index) => (
@@ -189,9 +197,10 @@ const AddSession = ({ mentorId }) => {
                 </Select>
 
                 <RangePicker
+                picker='year'
                   format="HH:mm"
                   value={selectedTime}
-                  suffixIcon="ab" showTime
+                  // suffixIcon="ab" showTime
                   onChange={(times) => setSelectedTime(times || [null, null])}
                   style={{ width: "45%" }}
                 />

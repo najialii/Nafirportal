@@ -13,7 +13,14 @@ import {Avatar} from 'antd'
 import nafirLogo from '../assets/naflogo-01.svg'
 const Nav = () => {
   const { user } = useAuthContext();
-
+  if (
+    window.location.pathname === "/login" || 
+    window.location.pathname === "/signup" || 
+    window.location.pathname.startsWith("/dashboard")
+  ) {
+    return null;
+  }
+  
   return (
     <nav className="bg-white border-gray-200">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

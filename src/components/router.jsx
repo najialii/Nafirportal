@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 
 import MentorPage from "../pages/MentorPage"; 
@@ -51,11 +51,13 @@ const AppRoutes = () => {
 
       {/* <Route path="/createActivity" element={<CreateActivity/>} /> */}
       {/* <Route path="/addsession" element={<AddSession />} /> */}
-      <Route path="/createActivity" element={<DashLayout><CreateActivity /></DashLayout>} />
-      <Route path="/profile/me" element={<DashLayout><UserPro /></DashLayout>} />
-      <Route path="/men-sessions" element={<DashLayout><MentSessions /></DashLayout>} />
-      <Route path="/addsession" element={<DashLayout><AddSession /></DashLayout>} />
-      {/* <Route path="/" element={<MentSessions/>} /> */}
+      <Route path="/dashboard/*" element={<DashLayout />}>
+        <Route path="createActivity" element={<CreateActivity />} />
+        <Route path="profile/me" element={<UserPro />} />
+        <Route path="men-sessions" element={<MentSessions />} />
+        <Route path="addsession" element={<AddSession />} />
+      </Route>
+
    
     </Routes>
   );
