@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSignIn } from "../hooks/useLogin";
 import { Input, Button, Modal, Typography } from "antd";
 import bizznezzman from '../assets/151595661_d7fe0908-4a18-445f-940f-f15055e16c75-01.jpg'
-
+import  logo from '../assets/naflogo-01.svg'
 const { Text, Link } = Typography;
 
 const Login = () => {
@@ -14,6 +14,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log("datasent", email, password);
     const result = await signIn(email, password);
 
     if (result.error === "Your mentor account is awaiting approval") {
@@ -25,13 +26,17 @@ const Login = () => {
     <>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 py-6 px-4">
         <div className="flex justify-center md:grid-cols-2 items-center gap-6 max-w-6xl w-full">
-          <div className="border border-gray-300 rounded-lg p-6 max-w-md shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto">
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="mb-8">
-                <h3 className="text-gray-800 text-3xl font-bold">Login to your account  </h3>
+          <div className="border border-gray-300 rounded-lg p-6 max-w-md shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto bg-white">
+           <div className="flex justify-center flex-col items-center">
+<img src={logo} className="h-20" alt="" srcset="" />
+<div className="mb-8">
+                <h3 className="text-primary-light text-2xl font-bold">Login to your account  </h3>
                 <p className="text-gray-500 text-sm mt-4 leading-relaxed">Sign in to your account and explore a world of possibilities. Your journey begins here.</p>
               </div>
 
+           </div>
+            <form onSubmit={handleLogin} className="space-y-4">
+             
               <div>
                 <label className="text-gray-800 text-sm mb-2 block">User name</label>
                 <Input

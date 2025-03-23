@@ -19,6 +19,7 @@ import ListMaxIndentLevelPlugin from "../plugins/ListMaxIndentLevelPlugin";
 import CodeHighlightPlugin from "../plugins/CodeHighlightPlugin";
 import AutoLinkPlugin from "../plugins/AutoLinkPlugin";
 import ToolbarPlugin from "../plugins/toolBar";
+import {Input} from 'antd'
 import "../styles.css";
 
 function Placeholder() {
@@ -69,6 +70,13 @@ export default function LexicalEditor({ onContentChange }) {
       <EditorUpdateListener onContentChange={onContentChange} />
       <div className="LexicalEditor-container">
         <ToolbarPlugin />
+        {/* <Input 
+                  value={title} 
+                  onChange={(e) => setTitle(e.target.value)} 
+                  placeholder="Enter blog title" 
+                  size="large" 
+                  className="mb-4 text-4xl font-bold border-none focus:ring-0"
+                /> */}
         <div className="LexicalEditor-inner">
           <RichTextPlugin
             contentEditable={

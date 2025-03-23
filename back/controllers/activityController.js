@@ -1,8 +1,11 @@
 const Activity = require('../models/activityModel');
 const User = require('../models/userModle'); 
 // Ensure the User model is imported
+const { ObjectId } = require('mongodb');
 
-// Get all activities for a user
+const mongoose = require('mongoose');
+
+
 const getActivities = async (req, res) => {
   try {
     const activities = await Activity.find();
@@ -12,7 +15,6 @@ const getActivities = async (req, res) => {
   }
 };
 
-// Create a new activity for a user
 const createActivity = async (req, res) => {
   const { description, name,userId, departmentId, location, link, meeting_id, passcode, date, time, status } = req.body;
   // const userId = req.user.id
@@ -73,10 +75,14 @@ const deleteActivity = async (req, res) => {
   try {
     const activity = await Activity.findById(req.params.activityId);
     if (!activity) {
-      return res.status(404).json({ message: 'Activity not found' });
+       res.status(404).json({ message: 'Activity not found' });
+       return console.log('no activity found')
+
     }
-    await activity.remove();
-    res.status(200).json({ message: 'Activity deleted' });
+   
+    const deletedActivity = await Activity.deleteOne({ _id: req.params.activityId });
+
+    res.status(200).json(deletedActivity);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -132,11 +138,46 @@ const getAllActivities = async (req, res) => {
 
 };
 
+const getActDep = async (req, res) => {
+  try {
+    const { departmentId } = req.params;
+
+    if (!departmentId) {
+      return res.status(400).json({ message: "No departmentId provided" });
+    }
+
+    const mongoose = require("mongoose");
+
+    console.log("Received departmentId:", departmentId);
+
+    let depId;
+    try {
+      depId = new mongoose.Types.ObjectId(departmentId);
+    } catch (error) {
+      return res.status(400).json({ message: "Invalid departmentId format" });
+    }
+
+    console.log("Converted ObjectId:", depId);
+
+    const actDep = await Activity.find({ departmentId: depId });
+
+    console.log("Query Result:", actDep);
+
+    res.status(200).json(actDep);
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
 module.exports = {
   getActivities,
   createActivity,
   updateActivity,
   deleteActivity,
+  getActDep,
   registerUser,
   getAllActivities,
 };

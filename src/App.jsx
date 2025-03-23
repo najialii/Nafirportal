@@ -2,9 +2,10 @@ import { useState, useRef } from 'react';
 import Nav from './components/navbar';
 import { ConfigProvider } from 'antd';
 import AppRoutes from './components/router';
+import './index.css'; 
 import ExpoAr from './assets/Expo Arabic Bold.ttf'
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-console.log('API Base URL:', apiBaseUrl);
+// const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 // import poppins-light from './assets/Expo Arabic Bold.ttf'
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
         },
       }}
     >
-      <div className='font-expoBold '>
+      <div className='font-expo '>
         <Nav />
         <div>
           <AppRoutes />

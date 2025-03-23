@@ -13,6 +13,8 @@ const getDepartments = async (req, res) => {
 // Create a new department
 const createDepartment = async (req, res) => {
   const { name, description } = req.body;
+
+  console.log('did yiu reach here ', name , description)
   const department = new Department({
     name,
     description,

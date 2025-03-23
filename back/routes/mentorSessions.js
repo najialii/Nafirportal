@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { authMiddleware } = require('../middleware/requireauth');
+const { authMiddleware, roleMiddleware } = require('../middleware/requireauth');
 const paginationMidWear = require('../middleware/paginationMidware')
 const MentorSession = require('../models/mentorSessionsModel');
 const {
@@ -22,10 +22,10 @@ router.get('/',authMiddleware, getMentorSessions);
 
 
 router.get('/:id', getSingleMentorSession);
-router.get('/mensessions/:id', getAllMentorSessions);
+router.get('/', getAllMentorSessions);
 router.get('/bystat/:id', getSessionByStatus);
 
-router.post('/', createMentorSession);
+router.post('/',roleMiddleware('admin', 'mentor'), createMentorSession);
 
 router.put('/:id', updateMentorSession);
 

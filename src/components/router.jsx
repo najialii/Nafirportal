@@ -24,6 +24,13 @@ import Blogpage from "../pages/blogspage";
 import Activities from '../pages/activities'
 import Activitiespage  from '../pages/activitiespage'
 import  CreateActivity from '../pages/createact'
+import Mentoreq from '../pages/admin/mentoreq'
+import ACtivitesList from '../pages/admin/actList'
+import MentorSessions from '../pages/admin/mentorsessions'
+import Overview from "../pages/admin/overview";
+import Manageusers  from '../pages/admin/manageusers'
+import Deparmnets from '../pages/superAdmin/department'
+import Sessionsman from '../pages/superAdmin/sessionsman'
 const AppRoutes = () => {
   return (
     <Routes>
@@ -56,6 +63,13 @@ const AppRoutes = () => {
         <Route path="profile/me" element={<UserPro />} />
         <Route path="men-sessions" element={<MentSessions />} />
         <Route path="addsession" element={<AddSession />} />
+        <Route path="mentors-req" element={<Mentoreq />} />
+        <Route path="activitesList" element={<ACtivitesList />} />
+        <Route path="mensessions" element={<MentorSessions />} />
+        <Route path="overview" element={<Overview />} />
+        <Route path="users" element={<Manageusers />} />
+        <Route path="deparmnets" element={<Deparmnets />} />
+        <Route path="sessionsmanagement" element={<Sessionsman />} />
       </Route>
 
    

@@ -5,9 +5,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        expo: ["expo-Light", "sans-serif"],
-        expoMedium: ["expo-Medium", "sans-serif"],
-        expoBold: ["expo-Bold", "sans-serif"],
+        expo: ["Expo", "sans-serif"], // For Light font
+        // expoMedium: ["Expo", "sans-serif"], // For Medium font
+        // expoBold: ["Expo", "sans-serif"],   // For Bold font
       },
       colors: {
         primary: {
@@ -26,4 +26,5 @@ module.exports = {
     },
   },
   plugins: [],
+  
 };

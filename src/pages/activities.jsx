@@ -33,24 +33,9 @@ setLoading(false)
         getact()
     },[])
   return (
-    <div style={{ maxWidth: "800px", margin: "auto", padding: "20px" }}>
+    <div className='' style={{ maxWidth: "800px", margin: "auto", padding: "20px", backgroundColor: '#fff' }}>
           {loading ? (
             <div>
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
-            <Skeleton active paragraph={{ rows: 4 }} />
             </div>
           ) : (
             <List

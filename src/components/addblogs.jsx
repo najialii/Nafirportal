@@ -8,7 +8,7 @@ import nafirlogo from '../assets/naflogo-01.svg';
 // import {EditorState} from 'lexical'
 import { ConfigProvider } from 'antd';
 import useAuthContext from "../hooks/useAuthContext.js";
-
+// import { PlusOutlined } from '@ant-design/icons';
 import '../styles.css'
 import LexicalEditor from '../components/lexicalEditor.jsx';
 
@@ -86,12 +86,28 @@ const uId = user?.user?.userid
     console.log('Listening: ', content, title);
   }, [content, title]);
 
-  const uploadProps = {
-    beforeUpload: (file) => {
-      antdMessage.success(`${file.name} uploaded successfully.`);
-      return false;
-    },
-  };
+  // const uploadProps = {
+  //   beforeUpload: (file) => {
+  //     antdMessage.success(`${file.name} uploaded successfully.`);
+  //     return false;
+  //   },
+  // };
+
+
+  
+const uploadProps = {
+  name: 'file',
+  accept: 'image/*',  // To allow only images
+  action: '/upload',  // Add your upload endpoint here
+  showUploadList: { showRemoveIcon: true }, // Show the remove icon after upload
+  onChange(info) {
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
 
   return (
     <ConfigProvider>
@@ -116,6 +132,7 @@ const uId = user?.user?.userid
     </div>
       </nav>
       <div className=""> 
+        <LexicalEditor onContentChange={handleContentChange} />
         <Input 
           value={title} 
           onChange={(e) => setTitle(e.target.value)} 
@@ -123,11 +140,32 @@ const uId = user?.user?.userid
           size="large" 
           className="mb-4 text-4xl font-bold border-none focus:ring-0"
         />
-        <LexicalEditor onContentChange={handleContentChange} />
         <div className="flex justify-center items-center mb-4">
-          <Upload {...uploadProps}>
-            <Button icon={<PlusOutlined />}>Upload Image</Button>
-          </Upload>
+        <Upload
+        width = {400}
+  {...uploadProps}
+  listType="picture-card" 
+  showUploadList={{
+    showRemoveIcon: true,
+    showPreviewIcon: false,
+  }}
+  className="upload-list-style" 
+  style={{
+    
+    border: '2px dashed #0073B1', 
+    padding: '40px 20px', 
+    borderRadius: '8px', 
+    textAlign: 'center',
+    backgroundColor: '#F4F6F9', 
+  }}
+>
+  <div>
+    <PlusOutlined style={{ fontSize: '24px', color: '#0073B1' }} />
+    <div style={{ marginTop: '8px', fontSize: '14px', color: '#0073B1' }}>
+      Drag & Drop Image or Click to Upload
+    </div>
+  </div>
+</Upload>
         </div>
         <div className="flex justify-between mt-4">
         <Button type="primary" loading={loading} onClick={handleSubmit}>

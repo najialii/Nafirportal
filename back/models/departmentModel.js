@@ -9,6 +9,10 @@ const departmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // admins : {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "User",
+  // },
   createdAt: {
     type: Date,
     default: Date.now,

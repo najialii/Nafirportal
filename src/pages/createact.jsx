@@ -10,6 +10,7 @@ const CreateActivity = () => {
 const  [dep , setDep] = useState([])
 const [selectedep , setSelectedDep] = useState()
   const userId = user?.user?.userid
+  console.log('this istheuser id', userId)
 
   const getdep = async()=>{
 
@@ -50,14 +51,20 @@ useEffect(()=>{
       form.resetFields();
     } catch (error) {
       console.error('Error creating activity:', error);
-      alert(error.message);
+      alert(error.message); 
     }
   };
 
   return (
-    
+    <div className=' p-4 rounded-xl'>
+        <div className='flex jsutify-start mb-6 text-3xl font-bold '>
+<h1>
+    Create New Session
+</h1>
+        </div>
     <Form form={form} onFinish={handleSubmit} layout="vertical">
-     
+
+
       <Form.Item name="name" label="Activity Name" rules={[{ required: true, message: 'Required' }]}> 
         <Input placeholder="Activity Name" />
       </Form.Item>
@@ -100,6 +107,7 @@ useEffect(()=>{
         <Button type="primary" htmlType="submit">Create Activity</Button>
       </Form.Item>
     </Form>
+    </div>
   );
 };
 

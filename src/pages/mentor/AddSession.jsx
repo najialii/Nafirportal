@@ -36,6 +36,8 @@ const AddSession = ({ mentorId }) => {
   const [value, setValue] = useState("");
   const user = useAuthContext();
 
+
+  console.log(mentorId)
   // console.log("Token:", localStorage.getItem("userToken"));
 
   const fetchMentor = async () => {
@@ -52,9 +54,13 @@ const AddSession = ({ mentorId }) => {
     }
   };
 
+  console.log('commmopobent monunted ')
+
+
   useEffect(() => {
+    console.log("Fetching mentor...");
     fetchMentor();
-  }, [mentorId]);
+  }, []);
 
   const handleSelTime = () => {
     if (selectedDay && selectedTime.length === 2) {
@@ -135,8 +141,8 @@ const AddSession = ({ mentorId }) => {
   };
 
   return (
-    <div className=" bg-white">
-      <div className="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div className=" ">
+      <div className="max-w-5xl mx-auto  p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Create Mentor Session</h2>
 
         {error && <p className="text-red-500 mb-3">{error}</p>}
