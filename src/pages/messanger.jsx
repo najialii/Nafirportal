@@ -21,6 +21,7 @@ const Messanger = () => {
   const socket = useRef(null);
   const newMessageRef = useRef(null);
   const conId = useParams();
+  const hasBeenAdded = useRef(false);
 
 //   console.log("Extracted Conversation ID:", conId.conversationId);
 
@@ -31,58 +32,67 @@ console.log
 
   useEffect(() => {
     if (!currentUser) return;
-
+  
     if (!socket.current) {
-      socket.current = io("http://localhost:4000",{
-
-          reconnection : true,
-          reconnectionAttempts: 10,
-       reconnectionDelay: 3000,
-       transports: ['websoket']
+      socket.current = io("http://localhost:4000", {
+        withCredentials: true,
+        reconnection: true,
+        reconnectionAttempts: 10,
+        reconnectionDelay: 3000,
+        transports: ['websocket'],
+      });
+  
+      socket.current.on('connect', () => {
+        console.log("Socket connected:", socket.current.id);
+      });
+  
+      socket.current.on('disconnect', () => {
+        console.log("Socket disconnected. Attempting to reconnect...");
       });
     }
-
-    //   if (!socket.current) {
-    // socket.current = io("http://localhost:4000", {
-    //   reconnection: true,
-    //   reconnectionAttempts: 10,
-    //   reconnectionDelay: 3000,
-    // });
-
-
-    // socket.current.on("connect", () => {
-    //     console.log("Socket connected:", socket.current.id);
-    //     socket.current.emit("add-user", currentUser); 
-    //   });
-    
-    //   socket.current.on("disconnect", () => {
-    //     console.log("Socket disconnected. Attempting to reconnect...");
-    //   });
-    
+  
     socket.current.emit("add-user", currentUser);
+    console.log(currentUser, 'here is the curetn user ')
 
     socket.current.on("get-messages", (data) => {
-        console.log("New message received:", data);
-        setArrivalMessage({
+      console.log("New message receivedsssssssssssss:", data);  
+      setArrivalMessage({
         sender: data.senderId,
         text: data.text,
         createdAt: Date.now(),
-    });
+      });
+
+
+
+
+      const openNotification = () => {
+        notification.info({
+          message: 'New Message',
+          description: 'You have a new message.',
+          placement: 'bottomRight',
+          duration: 3, // Notification will disappear after 3 seconds
+        });
+      };
+
+      openNotification();
     });
 
+    
+  
     return () => {
       if (socket.current) {
         socket.current.disconnect();
       }
     };
+  
   }, [currentUser]);
+  
 
   useEffect(() => {
-    if (arrivalMessage && currentChat?.members.includes(arrivalMessage.sender)) {
+    if (arrivalMessage && currentChat?.members.some(member => member._id === arrivalMessage.sender)) {
       setMessages((prevMessages) => [...prevMessages, arrivalMessage]);
     }
   }, [arrivalMessage, currentChat]);
-
 
   
   useEffect(() => {
@@ -90,6 +100,7 @@ console.log
       try {
         const res = await axios.get(`http://localhost:4000/api/conversation/${currentUser}`);
         setConversations(res.data);
+        console.log(res.data);
       } catch (err) {
         console.error(err);
       }
@@ -104,9 +115,9 @@ console.log
     const getMessages = async () => {
       if (currentChat?._id) {
         try {
-          const response = await axios.get(`http://localhost:4000/api/messages/${currentChat._id}`);
+          const response = await axios.get(`http://localhost:4000/api/messages/${currentChat?._id}`);
           setMessages(response.data);
-        //   console.log('lets see ', response.data)
+        console.log('lets see ', response.data)
         } catch (err) {
           console.error(err);
         }
@@ -125,13 +136,16 @@ console.log
       text: newMessage,
       conversationId: currentChat?._id,
     };
-    const receiverId = currentChat.members.find((member) => member !== currentUser);
+    const receiverId = currentChat.members.find((member) => member._id !== currentUser);
+  
+    console.log("Sending message:", { senderId: currentUser, receiverId, text: newMessage });  
+  
     socket.current.emit("send-message", {
       senderId: currentUser,
       receiverId,
       text: newMessage,
     });
-
+  
     try {
       const response = await axios.post("http://localhost:4000/api/messages", message);
       setMessages([...messages, response.data]);
@@ -140,33 +154,23 @@ console.log
       console.error(err);
     }
   };
-
+  
   useEffect(() => {
     newMessageRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const openNotification = () => {
-    notification.info({
-      message: 'New Message',
-      description: 'You have a new message.',
-      placement: 'bottomRight',
-    });
-  };
+
 
   //thats a bad idea ik  
-  const handleMsgNav = ()=>{
-    if(!conId.conversationId === undefined || conId !== undefined ){
-
-       
-      if (conId && conversations.length > 0) {
-        const chat = conversations.find((conv) => conv._id === conId);
-        if (chat) {
-          setCurrentChat(chat);
-          console.log('hey its working but it wont do thre thing ')
-        }
+  const handleMsgNav = () => {
+    if (conId.conversationId) {
+      const chat = conversations.find((conv) => conv._id === conId.conversationId);
+      if (chat) {
+        setCurrentChat(chat);
       }
     }
-  }
+  };
+  
   useEffect(() => {
 handleMsgNav()
   }, [conId, conversations]);
@@ -197,7 +201,7 @@ handleMsgNav()
              <List.Item.Meta
                 avatar={<Avatar size="large" src="https://placehold.co/200x/221F42/ffffff.svg" />}
                 title={item.name}
-                description={item.members.filter((m) => m._id !== currentUser._id)[0]?.name || "Unknown"}
+                 description={item.members.filter((m) => m._id !== currentUser)[0]?.name || "Unknown"}
                 />
 
               </List.Item>
@@ -284,3 +288,24 @@ handleMsgNav()
 };
 
 export default Messanger;
+
+
+
+
+    //   if (!socket.current) {
+    // socket.current = io("http://localhost:4000", {
+    //   reconnection: true,
+    //   reconnectionAttempts: 10,
+    //   reconnectionDelay: 3000,
+    // });
+
+
+    // socket.current.on("connect", () => {
+    //     console.log("Socket connected:", socket.current.id);
+    //     socket.current.emit("add-user", currentUser); 
+    //   });
+    
+    //   socket.current.on("disconnect", () => {
+    //     console.log("Socket disconnected. Attempting to reconnect...");
+    //   });
+    

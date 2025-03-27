@@ -1,5 +1,6 @@
 const User = require("../models/userModle");
 const mongoose = require('mongoose')
+
 exports.followUser = async (req, res) => {
     try {
         const { uToFollow } = req.body;
@@ -50,8 +51,6 @@ exports.followUser = async (req, res) => {
 };
 
 
-
-// retrive all follower 
 exports.getFollowers = async (req, res) => {
     try{
         const userId = req.params.userId
@@ -74,11 +73,6 @@ exports.getFollowers = async (req, res) => {
     }
 }
 
-
-
-
-
-//retriver all following 
 exports.getFollowing = async (req, res) => {
     try{
         const userId = req.params.userId
@@ -95,13 +89,6 @@ exports.getFollowing = async (req, res) => {
     }
 }
 
-
-
-
-
-
-
-//unfollow 
 
 exports.unFollow = async (req, res) =>{
     try{
@@ -131,30 +118,3 @@ res.status(200).json({message : "you have successfully unfollowed "})
     }
 }
 
-// exports.unfollowUser = async (req, res) => {
-//     try {
-//         const { uToUnfollow } = req.body;
-//         const userId = req.user ? req.user.id : req.body.userId; 
-
-//         if (!userId || !uToUnfollow) {
-//             return res.status(400).json({ message: "يا زول لازم تدخل البيانات كاملة" });
-//         }
-
-//         const user = await User.findById(userId);
-//         const userToUnfollow = await User.findById(uToUnfollow);
-
-//         // إزالة الشخص من قائمة المتابَعين
-//         user.following = user.following.filter(id => id.toString() !== uToUnfollow);
-        
-//         // إزالة المستخدم من قائمة المتابعين عند الشخص التاني
-//         userToUnfollow.followers = userToUnfollow.followers.filter(id => id.toString() !== userId);
-
-//         await user.save();
-//         await userToUnfollow.save();
-
-//         res.status(200).json({ message: "تم إلغاء المتابعة بنجاح" });
-
-//     } catch (error) {
-//         res.status(500).json({ message: "حصل خطأ في السيرفر", error: error.message });
-//     }
-// };

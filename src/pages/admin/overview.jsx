@@ -118,12 +118,21 @@ const [selectedMonth, setSelectedMonth] = useState(null)
             <span className='flex justify-start  mb-4'>
               <h1 className='text-sm  text-white'>Upcoming Activities</h1>
             </span>
-<Tables columns={columns} dataSource={data}  pagination={false}  rowKey="_id"/>
+{/* <Tables columns={columns} dataSource={data}  pagination={false}  rowKey="_id"/> */}
+<Table
+  columns={columns} dataSource={data} pagination={false} rowKey="_id" style={{ backgroundColor: 'white' }} tableLayout="auto" components={{
+    header: {
+      cell: (props) => (
+        <th {...props} style={{ backgroundColor: 'white', fontWeight: 'bold' }}>
+          {props.children}
+        </th>
+      ),
+    },}}/>
 
 <div className='flex bottom-0 mt-20  justify-end my-2'>
-  <button className='bg-white border border-primary-light hover:bg-primary-dark hover:text-white text-primary-dark font-bold py-2 px-4 rounded'>
+  {/* <button className='bg-white border border-primary-light hover:bg-primary-dark hover:text-white text-primary-dark font-bold py-2 px-4 rounded'>
     download report
-  </button>
+  </button> */}
   </div>
           </div>
         </div>

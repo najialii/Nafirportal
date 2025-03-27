@@ -64,7 +64,7 @@ const Signup = () => {
           availability,
           achievements: 'Not yet',
           about
-      }
+}
   console.log('here the data sent to the server', userData)
       try {
           const response = await axios.post('http://localhost:4000/api/user/signup', userData);
@@ -80,7 +80,7 @@ const Signup = () => {
   };
 
 
-  
+
 
     return (
 
@@ -116,8 +116,8 @@ const Signup = () => {
                 >
                     <option value="mentee">Mentee</option>
                     <option value="mentor">Mentor</option>
-                    <option value="admin">Admin</option>
-                    <option value="superadmin">super Admin</option>
+                    {/* <option value="admin">Admin</option>
+                    <option value="superadmin">super Admin</option> */}
                 </select>
 
                 <label className="block text-sm font-medium text-gray-700 mb-2">Name:</label>
@@ -128,6 +128,20 @@ const Signup = () => {
                             required
                             className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
                         />
+
+<label className="block text-sm font-medium text-gray-700 mb-2">Department:</label>
+        
+        <Select
+              style={{ width: 200 }}
+              placeholder="Select Department"
+              onChange={(value) => setSelectedDep(value)}
+             >
+               {dep.map((department)=>(
+                   <Option key={department._id} value={department.id}>
+                       {department.name}
+                   </Option>
+               ))}
+             </Select>
 
                 {/* {role === 'mentor' && (
                     <>
@@ -164,7 +178,7 @@ const Signup = () => {
         />
         <label className="block text-sm font-medium text-gray-700 mb-2">Department:</label>
         
-           <Select
+           {/* <Select
                  style={{ width: 200 }}
                  placeholder="Select Department"
                  onChange={(value) => setSelectedDep(value)}
@@ -174,7 +188,7 @@ const Signup = () => {
                           {department.name}
                       </Option>
                   ))}
-                </Select>
+                </Select> */}
         {/* <Input
             type="text"
             value={department}

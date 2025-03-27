@@ -94,7 +94,7 @@
             console.log("User found:", user); 
 
 
-            if (user.role === 'mentor' && !user.isApproved) {
+            if (user.role === 'mentor' && !user.isApproved || user.role === 'admin' && !user.isApproved) {
                 return res.status(403).json({ error: 'Your mentor account is awaiting approval' });
             }
 
@@ -146,8 +146,9 @@
     const getAccountsByApprovalStatus = async (req, res) => {
         try {
             const { isApproved } = req.query;
-            const accounts = await User.find({ isApproved: isApproved === 'true' });
-            res.status(200).json(accounts);
+            const accounts = await User.find({ isApproved: isApproved === 'false' });
+            const filterAccounts = accounts.filter(accounts => accounts.role === 'mentor') 
+            res.status(200).json(filterAccounts);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -238,6 +239,27 @@
             res.status(500).json({ error: error.message });
         }
     };
+
+    const calcUser = async (req, res) => {
+        try {
+            let filter = {};
+            if (req.query.userId) {
+                if (!mongoose.Types.ObjectId.isValid(req.query.userId)) {
+                    return res.status(400).json({ error: "Invalid user ID" });
+                }
+                filter._id = req.query.userId;
+            }
+    
+            const users = await User.find(filter);
+            const countUsers = users.length;
+    
+            res.status(200).json({ countUsers, users });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    };
+    
+    
 
 
     const denyMentor = async (req, res) => {
@@ -336,6 +358,7 @@
         getAllUsers,
         logout,
         achievements,
+        calcUser,
         userByDep,
         toggleBanUser
     };

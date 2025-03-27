@@ -12,12 +12,13 @@ const Login = () => {
   const [showPass, setShowPass] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log("datasent", email, password);
     const result = await signIn(email, password);
 
-    if (result.error === "Your mentor account is awaiting approval") {
+    if (result.error === "Your account is awaiting approval") {
       setShowModal(true);
     }
   };

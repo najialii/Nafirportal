@@ -7,6 +7,7 @@ const {
     denyMentor,
     achievements,
     toggleBanUser,
+    calcUser,
     getAccountsByApprovalStatus,
     getCurrentUser, 
     getUserById,
@@ -38,6 +39,9 @@ router.get('/', authMiddleware, roleMiddleware('admin', 'superadmin'), getAllUse
 
 //depAdmin
 router.get('/depuser/:department', authMiddleware,roleMiddleware('admin'), userByDep);
-// GET /depuser?department=Marketing&role=mentee
+
+
+//dashboard 
+router.get('/usercl', authMiddleware, roleMiddleware('admin', 'superadmin'), calcUser);
 module.exports = router
 

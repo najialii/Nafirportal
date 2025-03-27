@@ -89,7 +89,7 @@ const userSchema = new Schema({
     isApproved :{
      type:Boolean, 
      default:function() {
-        return this.role !== 'mentor'; 
+        return this.role !== 'mentor' && this.role !== 'admin'; 
     }
     },
     createdAt: {

@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 const MessageSchema = new Schema({
     conversationId: {
         type: Schema.Types.ObjectId,
-        ref: 'Conversation',  // Reference to the Conversation model
+        ref: 'Conversation',  
         required: true
     },
     sender: {
         type: Schema.Types.ObjectId,
-        ref: 'User',  // Reference to the User model
+        ref: 'User',  
         required: true
     },
     text: {

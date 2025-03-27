@@ -22,10 +22,11 @@ const Chart = ({ chartType, data, width = "100%", height = 200, barSize='22' }) 
           <Line type="monotone" dataKey="value" stroke="#008000" />
         </LineChart>
       ) : (
+        
         <BarChart data={data}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
           <XAxis dataKey="name"
-              tick={{ fontSize: 12, fill: "#ffff" }} 
+              tick={{ fontSize: 10, fill: "#ffff" }} 
               axisLine={{ stroke: "#fff" }} 
               tickLine={false} 
           />
@@ -35,7 +36,7 @@ const Chart = ({ chartType, data, width = "100%", height = 200, barSize='22' }) 
                         tickFormatter={(value) => `${value}`} 
            />
           <Tooltip />
-          <Bar dataKey="value" fill="#dddddd" barSize={20} radius={[10, 10, 0, 0]} />
+          <Bar dataKey="value" fill="#dddddd" barSize={30} radius={[10, 10, 0, 0]} />
         </BarChart>
       )}
     </ResponsiveContainer>

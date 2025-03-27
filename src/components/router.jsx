@@ -69,6 +69,7 @@ const AppRoutes = () => {
         <Route path="overview" element={<Overview />} />
         <Route path="users" element={<Manageusers />} />
         <Route path="deparmnets" element={<Deparmnets />} />
+        <Route path="messanger" element={<Messanger />} />
         <Route path="sessionsmanagement" element={<Sessionsman />} />
       </Route>
 

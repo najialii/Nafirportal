@@ -41,7 +41,7 @@ const res = await axios.patch(`http://localhost:4000/api/user/approve-mentor/${i
     headers: { Authorization: `Bearer ${token}` },
 })
 console.log(res)
-
+setMenReq(prevReqs => prevReqs.filter(req => req._id !== id));
 } catch (error){
 console.error(error.message)
 }
@@ -68,6 +68,9 @@ console.error(error.message)
           actions={[
             <Button type="primary" onClick={() => handleReq(req._id, 'approve')}>Accept</Button>,
             <Button danger onClick={() => handleReq(req._id, 'decline')}>Decline</Button>,
+            <div className='text-xl font-bold cursor-pointer'>
+            ...
+            </div>
           ]}
           style={{
             padding: '10px',
