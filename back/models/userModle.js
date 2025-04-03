@@ -17,9 +17,10 @@ const userSchema = new Schema({
         required: true,
         minlength: 6
     },
+    department: { type: mongoose.Schema.Types.ObjectId, ref: "Department" }, 
     role: {
         type: String,
-        enum: ['mentee', 'mentor', 'admin'],
+        enum: ['mentee', 'mentor', 'admin', 'superadmin'],
         required: true
     },
     name: {
@@ -37,6 +38,12 @@ const userSchema = new Schema({
     },
     country: {
         type: String
+    },
+    achievements: {
+        type: String,
+        enum: ['Not yet','job', 'course', 'project'],
+       default: 'Not yet'
+        //  required: true
     },
     skills: {
         type: [String]
@@ -64,10 +71,25 @@ const userSchema = new Schema({
         type: Boolean,
         default: true
     },
+    emaileVerified: {
+        type: Boolean,
+        default: false
+    },
+    emailtoken: {
+        type: String,
+    },
+    following: [{
+        type: Schema.Types.ObjectId, 
+        ref: "User"
+    }],
+    followers: [{
+        type: Schema.Types.ObjectId, 
+        ref: "User"
+    }],
     isApproved :{
      type:Boolean, 
      default:function() {
-        return this.role !== 'mentor'; 
+        return this.role !== 'mentor' && this.role !== 'admin'; 
     }
     },
     createdAt: {

@@ -1,5 +1,95 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary-light: #221F42;
+  --color-primary-dark: #3f3979;
+
+  --color-secondary-light: #EDB44B;
+  --color-secondary-dark: #efbb5d;
+
+  --color-accent-light: #91C85C;
+  --color-accent-dark: #5F8C2D;
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+/* 
 body {
     font-family: "El Messiri", sans-serif;
   }
+   */
+   @font-face {
+    font-family: "Expo";
+    src: url("./assets/fonts/ExpoArabic-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Expo";
+    src: url("./assets/fonts/ExpoArabic-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Expo";
+    src: url("./assets/Expo Arabic Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  body {
+    font-family: "Expo", sans-serif;
+  }
+  
+  /* body {
+    font-family: "El Messiri", sans-serif;
+  } */
+/* Custom Table Styling */
+.custom-table {
+  border:none !important; 
+    /* border-radius: 10px; */
+    overflow: hidden;
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+    background: white;
+}
+
+.ant-table {
+  background: white !important;
+}
+
+/* Table Header */
+.custom-table .ant-table-thead > tr > th {
+  background: #fafafa !important;
+  font-weight: 300;
+  color: #666;
+  border: none;
+  border-bottom: 1px solid #e6e6e6 !important;
+  padding: 10px;
+  font-size: 12px !important;
+  text-transform: uppercase;
+}
+
+/* Table Rows */
+.custom-table .ant-table-tbody > tr {
+  transition: all 0.3s;
+}
+
+/* Row Hover Effect */
+.custom-table .ant-table-tbody > tr:hover {
+  background: #f9f9f9 !important;
+}
+
+/* Table Cell Borders */
+.custom-table .ant-table-tbody > tr > td {
+  padding: 12px;
+  border-bottom: 1px solid #e6e6e6 !important;
+}
+
+/* Pagination */
+.custom-table .ant-table-pagination {
+  padding: 12px;
+}

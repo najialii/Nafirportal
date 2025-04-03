@@ -1,70 +1,33 @@
-import {useEffect, useRef, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import axios from 'axios'
-// import { sum } from '../sum.js';  // Correct import
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-console.log('API Base URL:', apiBaseUrl);
-import Nav from '../src/components/navbar'
-
-import Footer from './components/footer';
+import { useState, useRef } from 'react';
+import Nav from './components/navbar';
+import { ConfigProvider } from 'antd';
 import AppRoutes from './components/router';
+import './index.css'; 
+import ExpoAr from './assets/Expo Arabic Bold.ttf'
+// const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
+// import poppins-light from './assets/Expo Arabic Bold.ttf'
+
 function App() {
-  const [count, setCount] = useState(0)
- const mounted = useRef(false)
-
-// const getUserData = async () => {
-//   const response = await axios.get('https://jsonplaceholder.typicode.com/users')
-//   .then((response)=>{
-//     setUserData(response.data)
-//   })
-// }
-
-// async function getUserData(){
-//   const url = 'https://jsonplaceholder.typicode.com/users'
-//   try {
-//     const res= await fetch(url)
-//     if(!res.ok){
-//       throw new Error('something went wrong')
-//     }
-//     const jsonData = await res.json()
-//     setUserData(jsonData)
-//     console.log(jsonData)
-    
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// }
-
-
-
-
-
 
   return (
-    <>
-
-    <Nav />
-
-
-
-<div className=''>
-
-     <AppRoutes />
-</div>
-     {/* <AddDonation /> */}
-      
-
-
-
-
-      <Footer />
-    </>
-  )
-
-  
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#221F42',
+          borderRadius: 2,
+          colorBgContainer: '#f6ffed',
+        },
+      }}
+    >
+      <div className='font-expo '>
+        <Nav />
+        <div>
+          <AppRoutes />
+        </div>
+      </div>
+    </ConfigProvider>
+  );
 }
 
-
-
-export default App
+export default App;

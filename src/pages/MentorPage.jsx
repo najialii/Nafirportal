@@ -1,121 +1,106 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import cardtempimag from '../assets/studio-portrait-beautiful-young-woman-posing.jpg';
-import useAuthContext from '../hooks/useAuthContext';
-const MentorPage = () => {
-  const { id } = useParams(); 
-  const { user } = useAuthContext()
-  const [mentor, setMentor] = useState(null);
-  const [preferredTime, setpreferredTime] = useState(""); 
-  const [loading, setLoading] = useState(false);
-  // console.log(user)
+import { Card, Avatar, Typography, Button, Select, Spin, message } from "antd";
+import useAuthContext from "../hooks/useAuthContext";
+import cardtempimag from "../assets/studio-portrait-beautiful-young-woman-posing.jpg";
 
-  
+const { Title, Text } = Typography;
+const { Option } = Select;
+
+const MentorPage = () => {
+  const { id } = useParams();
+  const { user } = useAuthContext();
+  const [mentor, setMentor] = useState(null);
+  const [preferredTime, setPreferredTime] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    axios.get(`http://localhost:4000/api/mentorsessions/${id}`)
+    axios
+      .get(`http://localhost:4000/api/mentorsessions/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+      })
       .then((response) => {
         setMentor(response.data);
-        console.log('here is the data',  response.data)
       })
       .catch((error) => {
-        console.error("Error fetching mentor details:", error.message);
-        if (error.response) {
-          console.error("Server responded with:", error.response.status, error.response.data);
-        } else if (error.request) {
-          console.error("No response received:", error.request);
-        } else {
-          console.error("Request setup error:", error.message);
-        }
+        console.error("Error fetching mentor details:", error);
       });
-      
   }, [id]);
 
   const requestSession = async () => {
     if (!preferredTime) {
-      alert("Please select a preferred time.");
+      message.warning("Please select a preferred time.");
       return;
     }
-    
+
     setLoading(true);
-    
     try {
-      const token = localStorage.getItem("userToken"); 
-      if (!token) {
-        throw new Error("User token not found. Please log in again.");
-      }
+      const token = localStorage.getItem("userToken");
+      if (!token) throw new Error("User token not found. Please log in again.");
 
       const response = await axios.post(
         "http://localhost:4000/api/requestsession",
-        {
-          sessionId: id,
-          preferredTime,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { sessionId: id, preferredTime },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-  
-      alert("Session request sent successfully!");
-      console.log(response.data);
+
+      message.success("Session request sent successfully!");
     } catch (error) {
-      console.error("Error requesting session:", error);
-      alert("Failed to request session. " + (error.response?.data?.message || error.message));
+      message.error("Failed to request session.");
     }
-  
     setLoading(false);
   };
-  
+
+  const startChat = () => {
+    if (mentor?.mentorId) {
+      navigate(`/messanger/${mentor.mentorId}`);
+    } else {
+      message.error("Mentor ID is missing");
+    }
+  };
 
   return (
-    <div className="p-8">
-      {/* <header className="h-80 bg-gradient-to-br from-green-800 to-green-400"></header> */}
-
+    <div style={{ padding: "24px", display: "flex", justifyContent: "center" }}>
       {mentor ? (
-        <div className="flex justify-between gap-8 items-center  px-8">
-          <div className="flex justify-start items-center gap-2">
-            <div className="h-40 w-40 overflow-hidden rounded-full flex justify-center items-center border-4 border-white shadow-lg">
-              <img
-                src={cardtempimag}
-                alt={mentor.mentorName}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">{mentor.mentorName}</h1>
+        <Card style={{ width: 600, boxShadow: "0 4px 8px rgba(0,0,0,0.1)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <Avatar size={80} src={cardtempimag} />
+            <Title level={3}>{mentor.mentorName}</Title>
           </div>
-
-          <div className="bg-white fixed right-12 w-96 border border-gray-200 p-6 rounded-lg shadow-sm -mt-16">
-            <p className="text-gray-600 text-lg mb-3"><strong>Expertise:</strong> {mentor.mentorExpertise}</p>
-            <p className="text-gray-600 mb-3"><strong>About:</strong> {mentor.aboutMentor}</p>
-            <p className="text-gray-600 mb-3"><strong>Available Times:</strong></p>
-
-            <select
-              value={preferredTime}
-              onChange={(e) => setpreferredTime(e.target.value)}
-              className="w-full border border-gray-300 rounded-md p-2 mb-3"
-            >
-              <option value="">Select a time</option>
-              {mentor.availableTimes?.map((time, index) => (
-                <option key={index} value={time}>{time}</option>
-              ))}
-            </select>
-
-            <div className="flex justify-end w-full items-center">
-              <button
-                onClick={requestSession}
-                className="text-white w-full bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
-                disabled={loading}
-              >
-                {loading ? "Requesting..." : "Book a Session"}
-              </button>
-            </div>
+          <Text strong>Expertise: </Text><Text>{mentor.mentorExpertise}</Text>
+          <br />
+          <Text strong>About: </Text><Text>{mentor.aboutMentor}</Text>
+          <br />
+          <Text strong>Available Times: </Text>
+          <Select
+            style={{ width: "100%", marginTop: 8 }}
+            placeholder="Select a time"
+            value={preferredTime}
+            onChange={setPreferredTime}
+          >
+            {mentor.availableTimes.map((slot) =>
+              slot.times.map((time) => (
+                <Option key={`${slot.day}-${time}`} value={`${slot.day} ${time}`}>
+                  {slot.day} {time}
+                </Option>
+              ))
+            )}
+          </Select>
+          <div style={{ marginTop: 16, display: "flex", gap: "8px" }}>
+            <Button type="primary" loading={loading} onClick={requestSession} block>
+              {loading ? "Requesting..." : "Book a Session"}
+            </Button>
+            <Button onClick={startChat} block>
+              Message Mentor
+            </Button>
           </div>
-          <div>mentor.</div>
-        </div>
+        </Card>
       ) : (
-        <p className="text-center text-gray-500">Loading mentor details...</p>
+        <Spin tip="Loading mentor details..." size="large" />
       )}
     </div>
   );

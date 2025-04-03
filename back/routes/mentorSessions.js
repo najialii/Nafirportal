@@ -1,22 +1,31 @@
 const express = require('express');
 const router = express.Router();
+const { authMiddleware, roleMiddleware } = require('../middleware/requireauth');
+const paginationMidWear = require('../middleware/paginationMidware')
+const MentorSession = require('../models/mentorSessionsModel');
 const {
     createMentorSession,
     getMentorSessions,
     getSingleMentorSession,
     deleteMentorSession,
-    updateMentorSession
+    updateMentorSession,
+    getAllMentorSessions,
+    getSessionByStatus
 } = require('../controllers/mentorsessionsController');
 
-const requireAuth = require('../middleware/requireauth')
-//require auth for all of the routes 
-// router.use(requireAuth)
+ 
 
-router.get('/', getMentorSessions);
+router.use(authMiddleware)
+router.get('/',authMiddleware, getMentorSessions);
+
+// router.get('/api/mentorsessions',authMiddleware, paginationMidWear(MentorSession), getMentorSessions);
+
 
 router.get('/:id', getSingleMentorSession);
+router.get('/', getAllMentorSessions);
+router.get('/bystat/:id', getSessionByStatus);
 
-router.post('/', createMentorSession);
+router.post('/',roleMiddleware('admin', 'mentor'), createMentorSession);
 
 router.put('/:id', updateMentorSession);
 

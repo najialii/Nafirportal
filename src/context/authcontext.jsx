@@ -5,7 +5,8 @@ const AuthContext = createContext();
 export const authReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
-      localStorage.setItem("user", JSON.stringify(action.payload));
+      const userWRole = action.payload
+      localStorage.setItem("user", JSON.stringify(userWRole));
       return { user: action.payload };
     case "LOGOUT":
       localStorage.removeItem("user");

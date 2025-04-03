@@ -1,10 +1,21 @@
 const { default: mongoose } = require('mongoose');
 const MentorSession = require('../models/mentorSessionsModel');
-
+const paginationMidWear = require('../middleware/paginationMidware')
 
 const getMentorSessions = async (req, res) => {
     try {
-        const sessions = await MentorSession.find({}).sort({ createdAt: -1 });
+    const {page = 1 , limit = 10} = req.query
+
+    const options = {
+        page: parseInt(page, 10),
+        limit: parseInt(limit, 10),
+        sort: { createdAt: -1 },
+    }
+
+    const sessions = await MentorSession.paginate({}, options)
+        // const sessions = await MentorSession.find({}).sort({ createdAt: -1 });
+        console.log(sessions);
+
         res.status(200).json(sessions);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -33,9 +44,13 @@ const getSingleMentorSession = async (req, res) => {
 
 const createMentorSession = async (req, res) => {
     const { mentorImage, mentorName, mentorExpertise, aboutMentor, availableTimes } = req.body;
-
+    mentorId = req.user.id;
+    if (!mentorId) {
+        return res.status(403).json({ error: 'Unauthorized: No mentor ID found' });
+    }
     try {
         const session = await MentorSession.create({
+            mentorId,
             mentorImage,
             mentorName,
             mentorExpertise,
@@ -64,6 +79,7 @@ const updateMentorSession = async (req, res) => {
             return res.status(404).json({ error: 'Session not found' });
         }
 
+        console.log('Requested Time:', requestedTime);
 
         const request = session.requests.find(req => req.requestedTime === requestedTime && req.menteeName === menteeName);
         if (request) {
@@ -98,10 +114,35 @@ const deleteMentorSession = async (req, res) => {
     }
 };
 
+
+
+const getAllMentorSessions = async (req, res)=>{
+    const mentorId = req.user.id
+    try {
+        const sessions = await MentorSession.find({mentorId}).sort({ createdAt: -1 });
+        res.status(200).json(sessions);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+const getSessionByStatus = async (req, res) => {
+    const mentorId = req.user.id;
+    const { status } = req.params;
+
+    try {
+        const sessions = await MentorSession.find({ mentorId, "requests.status": status }).sort({ createdAt: -1 });
+        res.status(200).json(sessions);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 module.exports = {
     createMentorSession,
     getMentorSessions,
     getSingleMentorSession,
     updateMentorSession,
-    deleteMentorSession
+    deleteMentorSession,
+    getAllMentorSessions,
+    getSessionByStatus
 };

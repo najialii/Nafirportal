@@ -1,15 +1,13 @@
-const express = require("express");
-const multer = require("multer");
-const cvController = require("../controllers/cvController");
-
+const express = require('express');
 const router = express.Router();
+const cvController = require('../controllers/cvController');
+const upload = require('../middlewares/upload');
 
-// Configure Multer for file uploads
-const upload = multer({ dest: "uploads/" });
+// Define the route for uploading CVs
+router.post('/upload', upload.single('file'), cvController.uploadCV);
 
-
-router.post("/upload", upload.single("cv"), cvController.uploadCV);
-router.get("/", cvController.getAllCVs);
-router.get("/:id", cvController.getCVById);
+// Other CV routes
+router.get('/', cvController.getAllCVs);
+router.get('/:id', cvController.getCVById);
 
 module.exports = router;
