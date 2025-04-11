@@ -4,7 +4,7 @@ import { Button, Input, Upload, message as antdMessage } from "antd";
 import { EditorState, convertToRaw } from "draft-js";
 import "draft-js/dist/Draft.css";
 import { PlusOutlined } from "@ant-design/icons";
-import nafirlogo from '../assets/naflogo-01.svg';
+import nafirlogo from '../assets/nafir.svg';
 // import {EditorState} from 'lexical'
 import { ConfigProvider } from 'antd';
 import useAuthContext from "../hooks/useAuthContext.js";
