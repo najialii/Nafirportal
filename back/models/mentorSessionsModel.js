@@ -19,12 +19,22 @@ const mentorSessionSchema = new mongoose.Schema({
     },    
     mentorImage: {
         type: String, 
-        // required: true
     },
     mentorName: {
         type: String,
         required: true
     },
+    aboutMentor : {
+type:String,
+required: true
+    },
+    certificates: [
+        {
+            title: { type: String, required: true },
+            startDate: { type: Date, required: true },
+            endDate: { type: Date, required: true }
+        }
+    ],
     mentorExpertise: {
         type: [String], 
         required: true,

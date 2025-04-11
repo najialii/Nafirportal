@@ -14,7 +14,7 @@
 
     const signUp = async (req, res) => {
         console.log(req.body);
-        const { email, password,department, role, ...additionalData } = req.body;
+        const { email, password,department, role ,certificates, about, ...additionalData } = req.body;
 
         try {
             
@@ -47,8 +47,16 @@
 
             
     
-            let userData = { email, password: hashedPassword,department,role, name:additionalData.name };
-
+            let userData = {
+                email,
+                password: hashedPassword,
+                department,
+                role,
+                name: additionalData.name,
+                certificates: certificates || [],
+                about: about || ""
+                
+            };
             // if (role === 'mentee') {
             //     if (!additionalData.country) {
             //         throw new Error('Country is required for mentees');

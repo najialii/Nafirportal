@@ -1,8 +1,10 @@
+
+
 @import "tailwindcss";
 
 @theme {
-  --color-primary-light: #221F42;
-  --color-primary-dark: #3f3979;
+  --color-primary-light: #618B44;
+  --color-primary-dark: #618B44;
 
   --color-secondary-light: #EDB44B;
   --color-secondary-dark: #efbb5d;
@@ -40,10 +42,10 @@ body {
     font-weight: 700;
     font-style: normal;
   }
-
   body {
-    font-family: "Expo", sans-serif;
+    font-family: 'ElMassri', sans-serif;
   }
+  
   
   /* body {
     font-family: "El Messiri", sans-serif;

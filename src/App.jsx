@@ -4,6 +4,10 @@ import { ConfigProvider } from 'antd';
 import AppRoutes from './components/router';
 import './index.css'; 
 import ExpoAr from './assets/Expo Arabic Bold.ttf'
+import '@fontsource/poppins/300.css';
+import '@fontsource/poppins/600.css';
+import '@fontsource/poppins/700.css';
+
 // const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 // import poppins-light from './assets/Expo Arabic Bold.ttf'
@@ -20,7 +24,7 @@ function App() {
         },
       }}
     >
-      <div className='font-expo '>
+      <div className='font-poppins\'>
         <Nav />
         <div>
           <AppRoutes />

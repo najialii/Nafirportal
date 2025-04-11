@@ -1,9 +1,10 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Input, Button, Modal, Typography, Select } from "antd";
-
+import { Input, Button, Modal, Typography, Select, Steps } from "antd";
 
 const { Text, Link } = Typography;
+const { Option } = Select;
+const { Step } = Steps;
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -19,241 +20,366 @@ const Signup = () => {
     const [availability, setAvailability] = useState(true);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [about , setAbout] = useState()
-    const [department , setDepartment] = useState()
-    const [selectedep , setSelectedDep] = useState(null)
-    const [dep , setDep] = useState([])
-
-
-
+    const [certificates, setCertificates] = useState([
+        { title: "", startDate: "", endDate: "" },
+      ]);
+      
+    const [about, setAbout] = useState('');
+    const [department, setDepartment] = useState('');
+    const [selectedep, setSelectedDep] = useState(null);
+    const [dep, setDep] = useState([]);
+    const [currentStep, setCurrentStep] = useState(0);
 
     const getDeparment = async () => {
         try {
-          const res = await axios.get(`http://localhost:4000/api/department`);
-          setDep(res.data);
-          console.log(res.data)
+            const res = await axios.get(`http://localhost:4000/api/department`);
+            setDep(res.data);
         } catch (error) {
-          console.error(error.messsage);
+            console.error(error.message);
         }
+    };
+
+    useEffect(() => {
+        getDeparment();
+    }, []);
+
+
+    const handleCertificateChange = (index, field, value) => {
+        const updatedCertificates = [...certificates];
+        updatedCertificates[index][field] = value;
+        setCertificates(updatedCertificates);
       };
-  
+      
+      const addCertificate = () => {
+        setCertificates([
+            ...certificates,
+            { title: "Untitled Certificate", startDate: "", endDate: "" } 
+        ]);
+      };
+      
+      const removeCertificate = (index) => {
+        const updatedCertificates = certificates.filter((_, i) => i !== index);
+        setCertificates(updatedCertificates);
+      };
 
-      useEffect(()=>{
-        getDeparment()
-      },[])
-
+      
     const handleSubmit = async (e) => {
-      e.preventDefault();
-      setLoading(true);
-      setError('');
+        e.preventDefault();
+        setLoading(true);
+        setError('');
 
-      console.log('many man')
+        for (let i = 0; i < certificates.length; i++) {
+            const certificate = certificates[i];
+            if (!certificate.title.trim()) {
+                setError(`Certificate ${i + 1}: Title is required.`);
+                setLoading(false);
+                return;
+            }
+            if (!certificate.startDate) {
+                setError(`Certificate ${i + 1}: Start date is required.`);
+                setLoading(false);
+                return;
+            }
+            if (!certificate.endDate) {
+                setError(`Certificate ${i + 1}: End date is required.`);
+                setLoading(false);
+                return;
+            }
+        }
 
-      const userData = {
-          email,
-          password,
-          role,
-          name,
-          profilePicture,
-          country,
-          skills,
-          department : selectedep,
-          linkedinProfile,
-          experienceYears,
-          industry,
-          availability,
-          achievements: 'Not yet',
-          about
-}
-  console.log('here the data sent to the server', userData)
-      try {
-          const response = await axios.post('http://localhost:4000/api/user/signup', userData);
-          console.log(response); 
-          localStorage.setItem("user", JSON.stringify(response.data)); 
-          localStorage.setItem("userToken", response.data.token);
-      } catch (err) {
-          setError('Error creating user: ' + (err.response?.data?.message || err.message));
-          console.error('Signup Error:', err.response || err.message);
-      } finally {
-          setLoading(false);
-      }
-  };
+        const userData = {
+            email,
+            password,
+            role,
+            name,
+            profilePicture: "ddddd.com",
+            country,
+            skills,
+            department: selectedep,
+            linkedinProfile,
+            experienceYears,
+            industry,
+            availability,
+            achievements: 'Not yet',
+            about,
+            certificates
+        };
 
+        try {
+            const response = await axios.post('http://localhost:4000/api/user/signup', userData);
+            console.log(response);
+            localStorage.setItem("user", JSON.stringify(response.data));
+            localStorage.setItem("userToken", response.data.token);
+        } catch (err) {
+            setError('Error creating user: ' + (err.response?.data?.message || err.message));
+            console.error('Signup Error:', err.response || err.message);
+        } finally {
+            setLoading(false);
+        }
+        
+    };
 
+    const handleSkillsChange = (value) => {
+        setSkills(value);
+      };
 
+    const handleNext = () => {
+        setCurrentStep(currentStep + 1);
+    };
+
+    const handlePrev = () => {
+        setCurrentStep(currentStep - 1);
+    };
+
+    const handleRoleChange = (newRole) => {
+        setRole(newRole);
+        setCurrentStep(0);  // Reset the step when role changes
+    };
 
     return (
+        <div className='py-[80px] bg-gray-50'>
+            <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+                <h2 className="text-center text-primary-light text-3xl font-bold mb-6">Join Nafir</h2>
 
-      <>
-      <div className='py-[80px] bg-gray-50'>
-  
-        <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-center text-primary-light text-2xl mb-6">Signup</h2>
-            <form onSubmit={handleSubmit}>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Email:</label>
-                <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-                />
+                {/* Role Selection Buttons */}
+                <div className="flex w-full justify-center mb-6 gap-4">
+                    <button
+                        onClick={() => handleRoleChange('mentee')}
+                        className={`px-6 py-3 rounded-md text-base font-medium ${role === "mentee" ? "bg-primary-light text-white" : "bg-gray-200 hover:bg-gray-300"}`}
+                    >
+                        Mentee
+                    </button>
+                    <button
+                        onClick={() => handleRoleChange('mentor')}
+                        className={`px-6 py-3 rounded-md text-base font-medium ${role === "mentor" ? "bg-primary-light text-white" : "bg-gray-200 hover:bg-gray-300"}`}
+                    >
+                        Mentor
+                    </button>
+                </div>
 
-                <label className="block text-sm font-medium text-gray-700 mb-2">Password:</label>
-                <Input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-                />
+                <Steps current={currentStep} onChange={setCurrentStep} className="mb-6">
+                    <Step title="Account Details" />
+                    {role !== 'mentee' && <Step title="Professional Details" />}
+                    {role !== 'mentee' && <Step title="Additional Information" />}
+                </Steps>
 
-                <label className="block text-sm font-medium text-gray-700 mb-2">Role:</label>
-                <select
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-                >
-                    <option value="mentee">Mentee</option>
-                    <option value="mentor">Mentor</option>
-                    {/* <option value="admin">Admin</option>
-                    <option value="superadmin">super Admin</option> */}
-                </select>
+                <form onSubmit={handleSubmit}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {currentStep === 0 && (
+                            <>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email:</label>
+                                    <Input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
+                                        className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+                                    />
+                                </div>
 
-                <label className="block text-sm font-medium text-gray-700 mb-2">Name:</label>
-                        <Input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-                        />
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Password:</label>
+                                    <Input
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                        className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+                                    />
+                                </div>
 
-<label className="block text-sm font-medium text-gray-700 mb-2">Department:</label>
-        
-        <Select
-              style={{ width: 200 }}
-              placeholder="Select Department"
-              onChange={(value) => setSelectedDep(value)}
-             >
-               {dep.map((department)=>(
-                   <Option key={department._id} value={department.id}>
-                       {department.name}
-                   </Option>
-               ))}
-             </Select>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Name:</label>
+                                    <Input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        required
+                                        className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+                                    />
+                                </div>
+                            </>
+                        )}
 
-                {/* {role === 'mentor' && (
-                    <>
-                       
+                        {currentStep === 1 && role !== 'mentee' && (
+                            <>
 
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Profile Picture URL:</label>
-                        <Input
-                            type="text"
-                            value={profilePicture}
-                            onChange={(e) => setProfilePicture(e.target.value)}
-                            className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-                        />
+                                <div className="col-span-2">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">LinkedIn Profile URL:</label>
+                                    <Input
+                                        type="text"
+                                        value={linkedinProfile}
+                                        onChange={(e) => setLinkedinProfile(e.target.value)}
+                                        className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+                                    />
+                                </div>
 
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Skills:</label>
-                        <Input
-                            type="text"
-                            value={skills}
-                            onChange={(e) => setSkills(e.target.value.split(','))}
-                            className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-                            
-                            placeholder="Enter skills, separated by commas"
-                        />
-                    </>
-                )} */}
 
-{(role === 'mentor' || role === 'admin' || role === 'superadmin') && (
-    <>
-        <label className="block text-sm font-medium text-gray-700 mb-2">LinkedIn Profile URL:</label>
-        <Input
-            type="text"
-            value={linkedinProfile}
-            onChange={(e) => setLinkedinProfile(e.target.value)}
-            className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-        />
-        <label className="block text-sm font-medium text-gray-700 mb-2">Department:</label>
-        
-           {/* <Select
-                 style={{ width: 200 }}
-                 placeholder="Select Department"
-                 onChange={(value) => setSelectedDep(value)}
-                >
-                  {dep.map((department)=>(
-                      <Option key={department._id} value={department.id}>
-                          {department.name}
-                      </Option>
-                  ))}
-                </Select> */}
-        {/* <Input
-            type="text"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-            className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-        /> */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Experience Years:</label>
+                                    <Input
+                                        type="number"
+                                        value={experienceYears}
+                                        onChange={(e) => setExperienceYears(Number(e.target.value))}
+                                        className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+                                    />
+                                </div>
 
-        <label className="block text-sm font-medium text-gray-700 mb-2">Experience Years:</label>
-        <Input
-            type="number"
-            value={experienceYears}
-            onChange={(e) => setExperienceYears(Number(e.target.value))}
-            className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-        />
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Industry:</label>
+                                    <Input
+                                        type="text"
+                                        value={industry}
+                                        onChange={(e) => setIndustry(e.target.value)}
+                                        className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+                                    />
+                                </div>
+                            </>
+                        )}
 
-        <label className="block text-sm font-medium text-gray-700 mb-2">Industry:</label>
-        <Input
-            type="text"
-            value={industry}
-            onChange={(e) => setIndustry(e.target.value)}
-            className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-        />
-         <label className="block text-sm font-medium text-gray-700 mb-2">Profile Picture URL:</label>
-                        <Input
-                            type="text"
-                            value={profilePicture}
-                            onChange={(e) => setProfilePicture(e.target.value)}
-                            className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-                        />
+                        {currentStep === 2 && role !== 'mentee' && (
+                            <>
+                                <div className="col-span-2">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Department:</label>
+                                    <Select
+                                        style={{ width: '100%' }}
+                                        placeholder="Select Department"
+                                        onChange={(value) => setSelectedDep(value)}
+                                    >
+                                        {dep.map((department) => (
+                                            <Option key={department._id} value={department.id}>
+                                                {department.name}
+                                            </Option>
+                                        ))}
+                                    </Select>
+                                </div>
 
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Skills:</label>
-                        <Input
-                            type="text"
-                            value={skills}
-                            onChange={(e) => setSkills(e.target.value.split(','))}
-                            className="w-full p-3 mb-4 border border-gray-300 rounded-md text-gray-800 text-sm"
-                            
-                            placeholder="Enter skills, separated by commas"
-                        />
+                                <div>
+                                    {/* <label className="block text-sm font-medium text-gray-700 mb-2">Availability:</label> */}
+                                    {/* <Select
+                                        style={{ width: '100%' }}
+                                        value={availability ? 'Available' : 'Not Available'}
+                                        onChange={(value) => setAvailability(value === 'Available')}
+                                    >
+                                        <Option value="Available">Available</Option>
+                                        <Option value="Not Available">Not Available</Option>
+                                    </Select> */}
+                                </div>
+                                <div className="col-span-2">
+      <label className="block text-sm font-medium text-gray-700 mb-2">Certificates:</label>
+      {certificates.map((certificate, index) => (
+        <div key={index} className="mb-4">
+          <div className="flex gap-4">
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Certificate Title:</label>
+              <Input
+                type="text"
+                value={certificate.title}
+                onChange={(e) => handleCertificateChange(index, "title", e.target.value)}
+                className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+              />
+            </div>
 
-        {/* <label className="block text-sm font-medium text-gray-700 mb-2">Availability:</label>
-        <Input
-            type="checkbox"
-            checked={availability}
-            onChange={() => setAvailability(!availability)}
-            className="mb-4"
-        /> */}
-    </>
-)}
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Start Date:</label>
+              <Input
+                type="date"
+                value={certificate.startDate}
+                onChange={(e) => handleCertificateChange(index, "startDate", e.target.value)}
+                className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+              />
+            </div>
 
-                <Button
-                    // type="submit"
-                    htmlType='submit'
-                    type='primary'
-                    className={`w-full p-3 mt-4 text-white text-lg rounded-md cursor-pointer transition-all duration-300 ${loading ? 'bg-gray-400' : 'bg-green-800 hover:bg-green-900'}`}
-                >
-                       {loading ? "Creating Account" : "Create Account"}
-                </Button>
-
-                {error && <p className="text-center text-red-500 text-sm mt-4">{error}</p>}
-            </form>
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700 mb-2">End Date:</label>
+              <Input
+                type="date"
+                value={certificate.endDate}
+                onChange={(e) => handleCertificateChange(index, "endDate", e.target.value)}
+                className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+              />
+            </div>
+          </div>
+          <Button
+            onClick={() => removeCertificate(index)}
+            type="danger"
+            className="mt-2"
+            disabled={certificates.length <= 1}
+          >
+            Remove Certificate
+          </Button>
         </div>
+      ))}
 
-</div>
-        </>
+         
+
+      <Button onClick={addCertificate} type="dashed" className="w-full mt-4">
+        Add Certificate
+      </Button>
+    </div>
+
+             <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Skills:</label>
+                            <Input
+                                type="text"
+                                value={skills}
+                                onChange={(e) => setSkills(e.target.value.split(','))}
+                                className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+                                placeholder="Enter skills, separated by commas"
+                            />
+                        </div>
+
+                                <div className="col-span-2">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">About:</label>
+                                    <Input.TextArea
+                                        value={about}
+                                        onChange={(e) => setAbout(e.target.value)}
+                                        rows={4}
+                                        className="w-full p-4 border border-gray-300 rounded-md text-gray-800 text-sm shadow-sm focus:ring-2 focus:ring-primary-light"
+                                    />
+                                </div>
+                            
+                            </>
+                        )}
+
+                        <div className="col-span-2 mt-6">
+                            {currentStep < 2 && (
+                                <Button
+                                    onClick={handleNext}
+                                    type="primary"
+                                    className="w-full p-4 text-lg rounded-md"
+                                    disabled={loading}
+                                >
+                                    Next
+                                </Button>
+                            )}
+                            {currentStep === 2 && (
+                                <Button
+                                    htmlType='submit'
+                                    type='primary'
+                                    className="w-full p-4 text-lg rounded-md"
+                                    disabled={loading}
+                                >
+                                    {loading ? "Creating Account" : "Create Account"}
+                                </Button>
+                            )}
+                            {currentStep > 0 && (
+                                <Button
+                                    onClick={handlePrev}
+                                    type="default"
+                                    className="w-full p-4 text-lg rounded-md mt-4"
+                                >
+                                    Back
+                                </Button>
+                            )}
+                        </div>
+
+                        {error && <p className="text-center text-red-500 text-sm mt-4 col-span-2">{error}</p>}
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 

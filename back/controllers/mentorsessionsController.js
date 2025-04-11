@@ -43,7 +43,7 @@ const getSingleMentorSession = async (req, res) => {
 
 
 const createMentorSession = async (req, res) => {
-    const { mentorImage, mentorName, mentorExpertise, aboutMentor, availableTimes } = req.body;
+    const { mentorImage, mentorName, mentorExpertise, certificates,aboutMentor, availableTimes } = req.body;
     mentorId = req.user.id;
     if (!mentorId) {
         return res.status(403).json({ error: 'Unauthorized: No mentor ID found' });
@@ -52,6 +52,8 @@ const createMentorSession = async (req, res) => {
         const session = await MentorSession.create({
             mentorId,
             mentorImage,
+            aboutMentor,
+            certificates,
             mentorName,
             mentorExpertise,
             aboutMentor,

@@ -10,7 +10,10 @@ import {
   Spin,
   Form,
   AutoComplete,
+  Card, Col, Row
 } from "antd";
+
+
 import daysjs from "dayjs";
 import DashboardLayout from "../admin/admindash";
 const { RangePicker } = TimePicker;
@@ -34,6 +37,7 @@ const AddSession = ({ mentorId }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
+  // const [mentorCertificates, setmentorCertificates] = useState([])
   const user = useAuthContext();
 
 
@@ -47,14 +51,15 @@ const AddSession = ({ mentorId }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMentor(response.data);
+      console.log("Mentor data:", response.data);
       setMentorSkills(response.data.skills || []);
+      // setmentorCertificates(response.data.certificates || []);
     } catch (error) {
       console.error("Error fetching mentor details:", error);
       setError("Failed to load mentor details.");
     }
   };
 
-  console.log('commmopobent monunted ')
 
 
   useEffect(() => {
@@ -108,12 +113,12 @@ const AddSession = ({ mentorId }) => {
         mentorId: mentor?._id,
         mentorName: mentor.name,
         mentorImage: mentor?.profilePicture,
-        aboutMentor:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. A cupiditate asperiores doloremque doloribus architecto distinctio ratione voluptas aliquid accusantium ad laudantium modi eum rerum, sit dolore odio voluptatem quod fuga.",
+        aboutMentor: mentor.about,
+        certificates: mentor?.certificates,
         skills: updatedSkills,
          availableTimes,
          date : Date.now(), 
-         description : "Lorem ipsum dolor sit amet consectetur adipisicing elit", 
+        //  description : "Lorem ipsum dolor sit amet consectetur adipisicing elit", 
          title : 'javascript'
       };
       console.log('the paylod',sessionData);
@@ -153,6 +158,36 @@ const AddSession = ({ mentorId }) => {
               <Input value={mentor.name} disabled />
             </Form.Item>
 
+
+            <Form.Item label="About Mentor ">
+              <Input value={mentor.about} disabled />
+            </Form.Item>
+
+
+{mentor && mentor.certificates && mentor.certificates.length > 0 ? (
+  <div>
+    <h3 className="py-2">Certificates:</h3>
+    <Row gutter={16}>
+      {mentor.certificates.map((certificate, index) => (
+        <Col span={8} key={index}>
+          <Card
+            title={certificate.title}
+            bordered={false}
+            style={{ width: 300 }}
+            hoverable
+          >
+            <p><strong>Start Date:</strong> {daysjs(certificate.startDate).format("YYYY-MM-DD")}</p>
+            <p><strong>End Date:</strong> {daysjs(certificate.endDate).format("YYYY-MM-DD")}</p>
+          </Card>
+        </Col>
+      ))}
+    </Row>
+  </div>
+) : (
+  <p>No certificates available.</p>
+)}
+
+            
             <Form.Item label="Select or Add Expertise">
               {/* <Input
                 value={newSkill}
@@ -250,6 +285,7 @@ const AddSession = ({ mentorId }) => {
                 {loading ? "Creating..." : "Create Session"}
               </Button>
             </Form.Item>
+         
           </Form>
         ) : (
           <div className="flex justify-center items-center w-full h-full">

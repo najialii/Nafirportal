@@ -18,6 +18,7 @@ import SessionsPage from '../pages/sessionspage'
 import MentSessions from '../pages/mentor/sessions'
 import DashLayout from '../pages/admin/admindash'
 import UserPro from "../pages/userprofile";
+import Mentorships from "../pages/mentrships";
 import BlogPost from '../pages/blogpost'
 import CreateBlog  from '../components/addblogs'
 import Blogpage from "../pages/blogspage";
@@ -43,6 +44,7 @@ const AppRoutes = () => {
       <Route path="/cv" element={<CVUpload />} />
       <Route path="/chat" element={<Chat />} />
       <Route path="/messages" element={<RoomsList />} />
+      <Route path="/mentorships" element={<Mentorships />} />
       <Route path="/chatroom" element={<ChatRoom />} />
       <Route path="/messanger" element={<Messanger/>} />
       <Route path="/messanger/:conversationId" element={<Messanger/>} />

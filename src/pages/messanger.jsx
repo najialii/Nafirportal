@@ -178,17 +178,17 @@ handleMsgNav()
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider width={320} style={{ background: "#f0f2f5" }}>
-        <Header style={{ background: "#fff", padding: 0, textAlign: "center" }}>
-          <h3 className="text-xl font-bold">Chats</h3>
-        </Header>
+      <Sider width={320} style={{ background: "#fff", borderRight: "1px solid #f0f0f0" }}>
+        <header className="border border-gray-200 " style={{  padding: 0, textAlign: "center" }}>
+          <h3 className="text-xl font-bold py-4">Chats</h3>
+        </header>
         <div style={{ padding: "16px", overflowY: "auto", height: "calc(100vh - 64px)" }}>
           <List
             dataSource={conversations}
             renderItem={(item) => (
               <List.Item
                 onClick={() => setCurrentChat(item)}
-                style={{ cursor: "pointer", padding: "10px" }}
+                style={{  cursor: "pointer", padding: "10px" }}
                 actions={[
                   <span>{formatTimeAgo(item.updatedAt)}</span>,
                 ]}
@@ -199,9 +199,9 @@ handleMsgNav()
                   description={item.members.filter((m) => m !== currentUser)[0]}
                 /> */}
              <List.Item.Meta
-                avatar={<Avatar size="large" src="https://placehold.co/200x/221F42/ffffff.svg" />}
-                title={item.name}
-                 description={item.members.filter((m) => m._id !== currentUser)[0]?.name || "Unknown"}
+             avatar={<Avatar size="md" src="https://placehold.co/200x/221F42/ffffff.svg" />}
+             title={item.name}
+             description={item.members.filter((m) => m._id !== currentUser)[0]?.name || "Unknown"}
                 />
 
               </List.Item>
@@ -212,9 +212,15 @@ handleMsgNav()
 
    
       <Layout style={{ background: "#fff" , }}>
-        <Header style={{ background: "#fff", padding: 0 }}>
-          <h3>{currentChat ? currentChat.name : "Select a conversation"}</h3>
-        </Header>
+        <header className="border-b border-gray-100 " style={{ background: "#fff", padding: 0 }}>
+          <div className="flex px-2  items-center justify-start">
+          <span className="flex items-center py-4 gap-2">
+            {Avatar ? <Avatar size="md" src="https://placehold.co/200x/221F42/ffffff.svg" /> : "Unknown"}
+       
+          {currentChat ? currentChat.members.filter((m) => m._id !== currentUser)[0]?.name : "Unknown"}
+          </span>
+          </div>
+        </header>
         <Content style={{ padding: "20px"}}>
             <div  className="" style={{
               height: "calc(100vh - 200px)",
@@ -252,8 +258,11 @@ handleMsgNav()
                 </div>
               ))
             ) : (
-                <div className='flex justifiy-center'>
+                <div className='flex justifiy-center items-center'>
+                  <div>
+
               <Spin size="large" />
+                  </div>
               </div>
             )
           ) : (

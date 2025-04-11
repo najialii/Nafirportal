@@ -108,9 +108,9 @@ const columns = [
     ),
   },
   {
-      title: 'Country',
-      dataIndex: 'country',
-      key: 'country',
+      title: 'Department',
+      dataIndex: 'department',
+      key: 'department',
   },
   {
       title: 'Exp Years',
@@ -131,7 +131,7 @@ const columns = [
       title: 'Ban',
       dataIndex: 'status',
       key: 'status',
-      render: (status) => <Switch checked={status} onChange={onChange} />,
+      render: (status) => <Switch  checked={status} onChange={onChange} />,
   },
   {
       title: 'Action',

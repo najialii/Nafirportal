@@ -64,6 +64,14 @@ const userSchema = new Schema({
         type: Number,
         min: 0
     },
+    certificates: [
+        {
+            title: { type: String, required: true },
+            startDate: { type: Date, required: true },
+            endDate: { type: Date, required: true }
+        }
+    ],
+    
     industry: {
         type: String
     },
@@ -98,18 +106,25 @@ const userSchema = new Schema({
     }
 });
 
-// Pre-save hook to enforce req roles 
 userSchema.pre('validate', function (next) {
-    if (this.role == 'mentor') {
-        
-        if (!this.profilePicture) this.invalidate('profilePicture', 'Path `profilePicture` is required.');
+    if (this.role !== 'mentee') {
+        if (!this.profilePicture) {
+            this.invalidate('profilePicture', 'Path `profilePicture` is required.');
+        }
+
+        if (!this.skills || this.skills.length === 0) {
+            this.invalidate('skills', 'Path `skills` is required.');
+        }
+
+        if (!this.about || this.about.trim() === '') {
+            this.invalidate('about', 'Path `about` is required.');
+        }
+
+        if (!this.certificates || this.certificates.length === 0) {
+            this.invalidate('certificates', 'At least one certificate is required.');
+        }
     }
-    // if (this.role === 'mentee' && !this.country) {
-    //     this.invalidate('country', 'Path `country` is required.');
-    // }
-    if (this.role === 'mentor' && (!this.skills || this.skills.length === 0)) {
-        this.invalidate('skills', 'Path `skills` is required.');
-    }
+
     next();
 });
 

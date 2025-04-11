@@ -3,7 +3,7 @@ import MentorCard from '../components/MentorCard'
 const HomePage = ()=>{
 return(
     <>
-    <div className='flex justify-center'>
+    <div className='flex justify-center '>
 
         <img src='https://placehold.co/1200x400.png' alt="" srcset="" />
     </div>
